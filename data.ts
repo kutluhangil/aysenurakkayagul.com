@@ -46,6 +46,8 @@ export const data = {
   about: {
     label: { tr: "HAKKIMDA", en: "ABOUT ME" },
     title: { tr: "Klinik ve Akademi", en: "Clinical & Academia" },
+    cvUrl: "/cv.pdf", // Dummy URL
+    cvButton: { tr: "Özgeçmişi İndir (CV)", en: "Download CV" },
     p1: {
       tr: "Yıllarca yenidoğan yoğun bakım ve pediatri servislerinde edindiğim klinik tecrübemi, şimdi akademik alanda gelecek nesil sağlık çalışanlarına aktarıyorum. Hemşirelik eğitiminde yenilikçi yaklaşımlar ve kanıta dayalı uygulamalar üzerine odaklanmaktayım.",
       en: "I am now transferring my clinical experience gained over the years in neonatal intensive care and pediatric wards to the next generation of healthcare professionals in the academic field. I focus on innovative approaches and evidence-based practices in nursing education."
@@ -54,6 +56,71 @@ export const data = {
       tr: "Araştırmalarım, özellikle yenidoğanlarda ağrı yönetimi, anne-bebek etkileşimi ve yenidoğan stres faktörlerinin azaltılması üzerinedir.",
       en: "My research focuses specifically on pain management in newborns, mother-infant interaction, and reducing neonatal stress factors."
     }
+  },
+  stats: {
+    items: [
+      { count: 10, label: { tr: "Sektörel Yıl", en: "Years in Field" } },
+      { count: 15, label: { tr: "Akademik Yayın", en: "Publications" } },
+      { count: 8, label: { tr: "Eğitim Programı", en: "Educational Programs" } },
+      { count: 50, suffix: "+", label: { tr: "Mezun Öğrenci", en: "Graduated Students" } }
+    ]
+  },
+  teaching: {
+    label: { tr: "EĞİTİM & DERSLER", en: "TEACHING & COURSES" },
+    title: { tr: "Verilen Dersler", en: "Courses Taught" },
+    courses: [
+      {
+        name: { tr: "Çocuk Sağlığı ve Hastalıkları Hemşireliği", en: "Child Health and Diseases Nursing" },
+        desc: { tr: "Lisans düzeyinde temel pediatri hemşireliği prensipleri ve çocuk sağlığına bütüncül yaklaşım.", en: "Undergraduate level fundamental pediatric nursing principles and holistic approach to child health." }
+      },
+      {
+        name: { tr: "İlk ve Acil Yardım", en: "First and Emergency Aid" },
+        desc: { tr: "Acil durumlarda kritik karar verme, hayat kurtarıcı müdahaleler ve temel yaşam desteği.", en: "Critical decision making in emergencies, life-saving interventions, and basic life support." }
+      },
+      {
+        name: { tr: "Temel ve İleri Yaşam Desteği", en: "Basic and Advanced Life Support" },
+        desc: { tr: "Profesyonel yaşam desteği protokolleri, CPR uygulamaları ve hava yolu yönetimi.", en: "Professional life support protocols, CPR applications, and airway management." }
+      }
+    ]
+  },
+  awards: {
+    label: { tr: "ÖDÜLLER & BAŞARILAR", en: "AWARDS & HONORS" },
+    title: { tr: "Akademik Başarılar", en: "Academic Achievements" },
+    items: [
+      {
+        title: { tr: "En İyi Sözlü Bildiri Ödülü", en: "Best Oral Presentation Award" },
+        event: { tr: "8. Ulusal Pediatri Hemşireliği Kongresi", en: "8th National Pediatric Nursing Congress" },
+        year: "2023"
+      },
+      {
+        title: { tr: "Akademik Teşvik Ödülü", en: "Academic Incentive Award" },
+        event: "Fenerbahçe Üniversitesi",
+        year: "2022"
+      },
+      {
+        title: { tr: "En İyi Poster Bildirisi", en: "Best Poster Presentation" },
+        event: { tr: "Uluslararası Yenidoğan Sempozyumu", en: "International Neonatal Symposium" },
+        year: "2021"
+      }
+    ]
+  },
+  talks: {
+    label: { tr: "MEDYA & KONUŞMALAR", en: "MEDIA & TALKS" },
+    title: { tr: "Konferanslar ve Sempozyumlar", en: "Talks & Presentations" },
+    items: [
+      {
+        title: { tr: "Yenidoğanlarda Ağrı Yönetimi ve Hemşirelik Yaklaşımları", en: "Pain Management in Newborns and Nursing Approaches" },
+        event: { tr: "Ulusal Çocuk Sağlığı Kongresi (Davetli Konuşmacı)", en: "National Child Health Congress (Invited Speaker)" },
+        year: "2024",
+        link: "#"
+      },
+      {
+        title: { tr: "Çocuklarda İlkyardım Farkındalığı", en: "First Aid Awareness in Children" },
+        event: { tr: "Sağlık TV Gündem Programı", en: "Health TV Agenda Program" },
+        year: "2023",
+        link: "#"
+      }
+    ]
   },
   projects: {
     label: { tr: "YAYINLAR & PROJELER", en: "PUBLICATIONS & PROJECTS" },

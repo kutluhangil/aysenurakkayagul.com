@@ -6,8 +6,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HeroScene } from './components/QuantumScene';
-import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay } from 'lucide-react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Markdown from 'react-markdown';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -37,6 +37,31 @@ const ExperienceCard = ({ role, company, date, delay, skills }: { role: string, 
     </div>
   );
 };
+
+function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number, suffix?: string, duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (isInView) {
+      let start = 0;
+      const increment = end / (duration / 16);
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= end) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.ceil(start));
+        }
+      }, 16);
+      return () => clearInterval(timer);
+    }
+  }, [isInView, end, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
 
 const PublicationCard = ({ title, type, citation, onClick, lang }: { title: string, type: string, citation?: string, onClick?: () => void, lang: Language }) => {
   const [copied, setCopied] = useState(false);
@@ -285,13 +310,37 @@ const App: React.FC = () => {
 
       {location.pathname === '/' && (
       <main>
+        {/* Stats Section */}
+        <section className="py-12 bg-nobel-gold/10 dark:bg-nobel-gold/5 border-b border-nobel-gold/20">
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              {data.stats.items.map((stat, idx) => (
+                <div key={idx} className="flex flex-col items-center justify-center p-4">
+                  <span className="font-serif text-4xl md:text-5xl lg:text-6xl text-stone-900 dark:text-stone-100 mb-2">
+                    <AnimatedCounter end={stat.count} suffix={stat.suffix} />
+                  </span>
+                  <span className="text-sm md:text-base font-medium tracking-wider text-stone-600 dark:text-stone-400 uppercase">
+                    {stat.label[lang]}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* About Section */}
         <section id="about" className="py-24 bg-white dark:bg-emerald-950/10">
           <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
-            <div className="md:col-span-4">
+            <div className="md:col-span-4 flex flex-col items-start">
               <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.about.label[lang]}</div>
               <h2 className="font-serif text-4xl mb-6 leading-tight text-stone-900 dark:text-stone-100">{data.about.title[lang]}</h2>
-              <div className="w-16 h-1 bg-nobel-gold mb-6"></div>
+              <div className="w-16 h-1 bg-nobel-gold mb-8"></div>
+              {data.about.cvUrl && (
+                <a href={data.about.cvUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 rounded-full hover:bg-stone-800 dark:hover:bg-white transition-colors shadow-sm font-medium">
+                  <Download size={18} />
+                  <span>{data.about.cvButton[lang]}</span>
+                </a>
+              )}
             </div>
             <div className="md:col-span-8 text-lg text-stone-600 dark:text-stone-300 leading-relaxed space-y-6">
               <p>
@@ -403,6 +452,25 @@ const App: React.FC = () => {
                         </div>
                      </div>
                 </div>
+
+                {/* Teaching */}
+                <div className="mt-24">
+                  <div className="mb-12 text-center lg:text-left">
+                       <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-800 text-nobel-gold text-xs font-bold tracking-widest uppercase rounded-full mb-6 border border-stone-700">
+                           {data.teaching.label[lang]}
+                       </div>
+                       <h2 className="font-serif text-3xl md:text-4xl text-white">{data.teaching.title[lang]}</h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {data.teaching.courses.map((course, idx) => (
+                          <div key={idx} className="bg-stone-800/50 p-8 rounded-2xl border border-stone-700 hover:border-nobel-gold transition-colors">
+                              <School className="text-nobel-gold mb-6" size={32} />
+                              <h3 className="font-serif text-xl text-white mb-4">{course.name[lang]}</h3>
+                              <p className="text-stone-400 text-sm leading-relaxed">{course.desc[lang]}</p>
+                          </div>
+                      ))}
+                  </div>
+                </div>
             </div>
         </section>
 
@@ -418,6 +486,27 @@ const App: React.FC = () => {
                     {filteredPublications.length === 0 && <p className="text-stone-500 text-center italic">{lang === 'tr' ? 'Sonuç bulunamadı...' : 'No results found...'}</p>}
                     {filteredPublications.map((pub, idx) => (
                         <PublicationCard key={idx} lang={lang} title={pub.title[lang]} type={pub.type[lang]} citation={pub.citation} onClick={() => pub.pdfUrl ? setSelectedPdf({ title: pub.title[lang], type: pub.type[lang], url: pub.pdfUrl }) : null} />
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        {/* Talks & Presentations */}
+        <section id="talks" className="py-24 bg-white dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800">
+            <div className="container mx-auto px-6">
+                <div className="max-w-4xl mx-auto text-center mb-16">
+                    <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.talks.label[lang]}</div>
+                    <h2 className="font-serif text-4xl md:text-5xl mb-6 text-stone-900 dark:text-white">{data.talks.title[lang]}</h2>
+                    <div className="w-16 h-1 bg-nobel-gold mx-auto"></div>
+                </div>
+                <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {data.talks.items.map((talk, idx) => (
+                        <div key={idx} className="p-8 bg-[#F5F4F0] dark:bg-stone-900 rounded-2xl border border-stone-200 dark:border-stone-700 hover:border-nobel-gold transition-colors flex flex-col items-center text-center">
+                            <MonitorPlay className="text-nobel-gold mb-6" size={40} strokeWidth={1.5} />
+                            <h3 className="font-serif text-xl md:text-2xl text-stone-900 dark:text-stone-100 mb-4">{talk.title[lang]}</h3>
+                            <p className="text-stone-600 dark:text-stone-400 mb-4 leading-relaxed">{talk.event[lang]}</p>
+                            <span className="text-sm font-bold text-stone-500 uppercase tracking-widest mt-auto bg-white dark:bg-stone-800 px-4 py-1.5 rounded-full shadow-sm">{talk.year}</span>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -459,6 +548,34 @@ const App: React.FC = () => {
                     </div>
                 </div>
              </div>
+        </section>
+
+        {/* Awards & Honors */}
+        <section id="awards" className="py-24 bg-[#F5F4F0] dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800">
+            <div className="container mx-auto px-6">
+                <div className="max-w-4xl mx-auto text-center mb-16">
+                    <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.awards.label[lang]}</div>
+                    <h2 className="font-serif text-4xl md:text-5xl mb-6 text-stone-900 dark:text-white">{data.awards.title[lang]}</h2>
+                    <div className="w-16 h-1 bg-nobel-gold mx-auto"></div>
+                </div>
+                
+                <div className="max-w-3xl mx-auto space-y-6">
+                    {data.awards.items.map((award, idx) => (
+                         <div key={idx} className="flex gap-6 items-center p-6 bg-white dark:bg-stone-800 rounded-2xl border border-stone-200 dark:border-stone-700 shadow-sm hover:shadow-md transition-shadow">
+                             <div className="w-16 h-16 shrink-0 bg-nobel-gold/10 dark:bg-nobel-gold/20 rounded-full flex items-center justify-center">
+                                 <Medal className="text-nobel-gold" size={28} strokeWidth={1.5} />
+                             </div>
+                             <div className="flex-1">
+                                 <h3 className="font-serif text-xl md:text-2xl text-stone-900 dark:text-stone-100 mb-1">{award.title[lang]}</h3>
+                                 <p className="text-stone-600 dark:text-stone-400 font-medium">{typeof award.event === 'string' ? award.event : award.event[lang]}</p>
+                             </div>
+                             <div className="text-xl font-serif text-nobel-gold font-bold">
+                                 {award.year}
+                             </div>
+                         </div>
+                    ))}
+                </div>
+            </div>
         </section>
 
         {/* Gallery */}
