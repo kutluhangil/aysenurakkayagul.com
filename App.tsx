@@ -413,19 +413,19 @@ const App: React.FC = () => {
                    <div className="bg-white dark:bg-stone-900 p-6 xl:p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
                        <Briefcase className="text-nobel-gold mb-4 group-hover:scale-110 transition-transform" size={40} strokeWidth={1.5} />
                        <h3 className="font-serif text-3xl text-stone-900 dark:text-stone-100 mb-2">5</h3>
-                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">{data.orcid_summary.stats.employment[lang]}</p>
+                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider break-words text-center w-full">{data.orcid_summary.stats.employment[lang]}</p>
                    </div>
                    
                    <div className="bg-white dark:bg-stone-900 p-6 xl:p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
                        <GraduationCap className="text-nobel-gold mb-4 group-hover:scale-110 transition-transform" size={40} strokeWidth={1.5} />
                        <h3 className="font-serif text-3xl text-stone-900 dark:text-stone-100 mb-2">4</h3>
-                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">{data.orcid_summary.stats.education[lang]}</p>
+                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider break-words text-center w-full">{data.orcid_summary.stats.education[lang]}</p>
                    </div>
                    
                    <div className="bg-white dark:bg-stone-900 p-6 xl:p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
                        <BookOpen className="text-nobel-gold mb-4 group-hover:scale-110 transition-transform" size={40} strokeWidth={1.5} />
                        <h3 className="font-serif text-3xl text-stone-900 dark:text-stone-100 mb-2">2</h3>
-                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">{data.orcid_summary.stats.works[lang]}</p>
+                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider break-words text-center w-full">{data.orcid_summary.stats.works[lang]}</p>
                    </div>
                </div>
             </div>
@@ -441,7 +441,7 @@ const App: React.FC = () => {
                  </div>
                  <h2 className="font-serif text-4xl text-stone-900 dark:text-white">LinkedIn Feed</h2>
              </div>
-             <div className="max-w-4xl mx-auto md:p-8 rounded-3xl overflow-hidden shadow-lg border border-stone-200 dark:border-stone-800 bg-white">
+             <div className="w-full mx-auto md:p-8 rounded-3xl overflow-hidden shadow-lg border border-stone-200 dark:border-stone-800 bg-white">
                 <div className="elfsight-app-31c4d3c3-6a14-4e86-81e5-a69a1ca957e3" data-elfsight-app-lazy></div>
              </div>
           </div>

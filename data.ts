@@ -196,7 +196,7 @@ export const data = {
     stats: {
       employment: { tr: "İş Deneyimi", en: "Employment Records" },
       education: { tr: "Eğitim Kaydı", en: "Education Records" },
-      works: { tr: "Makale/Yayın", en: "Works/Publications" }
+      works: { tr: "Makale / Yayın", en: "Works / Publications" }
     }
   },
   gallery: {
