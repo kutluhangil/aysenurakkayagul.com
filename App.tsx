@@ -16,7 +16,7 @@ import { data, Language } from './data';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, useNavigate, useLocation } from 'react-router-dom';
 
 const ExperienceCard = ({ role, company, date, delay, skills }: { role: string, company: string, date: string, delay: string, skills?: string[] }) => {
   return (
@@ -534,7 +534,7 @@ const App: React.FC = () => {
                   <h2 className="font-serif text-4xl md:text-5xl mb-12 text-white">{data.contact.title[lang]}</h2>
                   
                   <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-                      <a href={`mailto:${data.contact.email}`} className="flex flex-col items-center gap-4 group">
+                      <a href={`mailto:${data.contact.email}`} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open(`mailto:${data.contact.email}`, '_blank'); }} className="flex flex-col items-center gap-4 group">
                           <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-nobel-gold group-hover:scale-110 group-hover:bg-nobel-gold group-hover:text-stone-900 transition-all duration-300">
                               <Mail size={24} />
                           </div>
