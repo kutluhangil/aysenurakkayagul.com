@@ -17,7 +17,6 @@ export const data = {
       experience: { tr: "Deneyim", en: "Experience" },
       certificate: { tr: "Sertifikalar", en: "Certificate" },
       blog: { tr: "Blog & Notlar", en: "Blog & Notes" },
-      posts: { tr: "Gönderiler", en: "Posts" },
       orcid: { tr: "ORCID", en: "ORCID" },
       contact: { tr: "İletişim", en: "Contact" }
     }
@@ -206,36 +205,7 @@ export const data = {
       }
     ]
   },
-  posts: {
-    label: { tr: "GÜNCELLEMELER", en: "UPDATES" },
-    title: { tr: "Gönderiler & Duyurular", en: "Posts & Announcements" },
-    items: [
-      {
-        id: "2",
-        date: "2023-05-01",
-        content: {
-          tr: "Yenidoğan Canlandırma Programı ( Neonatal Resuscitation Program, NRP) doğumda bebeğe eli dokunan tüm sağlık çalışanlarına yönelik başarıyla yürütülen hizmet içi bir eğitim programıdır. Eğitimci olarak görev aldığım bu programda olmaktan mutluluk duyuyorum. Güldük, eğlendik, uyguladık, eğittik,sertifikalar dağıttık… Çünkü onlar kahraman sağlıkçılar o halde yaşasın yenidoğanlar ♥️:)\n\n#eğitim #sağlık #neonatal #sağlıkbakanlığı #türkneonatolojiderneği",
-          en: "The Neonatal Resuscitation Program (NRP) is a successfully conducted in-service training program for all healthcare professionals who touch the baby at birth. I am happy to be in this program where I work as an educator. We laughed, had fun, practiced, trained, and distributed certificates... Because they are hero healthcare workers, so long live newborns ♥️:)\n\n#education #health #neonatal #ministryofhealth #turkishneonatologysociety"
-        },
-        images: [
-          "/linkedin_posts/post2/1.jpg",
-          "/linkedin_posts/post2/2.jpg",
-          "/linkedin_posts/post2/3.jpg",
-          "/linkedin_posts/post2/4.jpg",
-          "/linkedin_posts/post2/5.jpg"
-        ]
-      },
-      {
-        id: "1",
-        date: "2022-02-14",
-        content: {
-          tr: "Fenerbahçe Üniversitesi şirketinde İlk ve Acil Yardım Bölümü - Öğretim Görevlisi olarak çalışmaya başladığımı paylaşmaktan mutluluk duyuyorum! 🎉",
-          en: "I’m happy to share that I’m starting a new position as Lecturer - First and Emergency Aid Program at Fenerbahçe University! 🎉"
-        },
-        image: "/linkedin_posts/post1/1.gif"
-      }
-    ]
-  },
+
   contact: {
     label: { tr: "İLETİŞİM", en: "CONTACT" },
     title: { tr: "Bize Ulaşın", en: "Get In Touch" },

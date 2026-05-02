@@ -16,22 +16,24 @@ import { data, Language } from './data';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+
 const ExperienceCard = ({ role, company, date, delay, skills }: { role: string, company: string, date: string, delay: string, skills?: string[] }) => {
   return (
-    <div className="flex flex-col group animate-fade-in-up items-start p-8 bg-white dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700 shadow-sm hover:shadow-md transition-all duration-300 w-full hover:border-nobel-gold/50 dark:hover:border-nobel-gold/50" style={{ animationDelay: delay }}>
-      <h3 className="font-serif text-xl text-stone-900 dark:text-stone-100 mb-2">{role}</h3>
-      <div className="w-8 h-0.5 bg-nobel-gold mb-3 opacity-60 group-hover:w-16 transition-all duration-300"></div>
-      <p className="text-sm text-stone-800 dark:text-stone-300 font-medium mb-1">{company}</p>
-      <p className="text-xs text-stone-500 dark:text-stone-400 font-bold uppercase tracking-widest leading-relaxed mb-4">{date}</p>
-      {skills && skills.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-auto">
-            {skills.map((skill, idx) => (
-                <span key={idx} className="px-3 py-1 bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-600 text-xs rounded-full">
-                    {skill}
-                </span>
-            ))}
-        </div>
-      )}
+    <div className="relative pl-8 border-l-2 border-stone-700 animate-fade-in-up" style={{ animationDelay: delay }}>
+        <div className="absolute w-4 h-4 bg-stone-900 border-2 border-nobel-gold rounded-full -left-[9px] top-1"></div>
+        <h4 className="text-xl font-medium text-white mb-1">{role}</h4>
+        <p className="text-stone-400 mb-2">{company}</p>
+        <p className="text-sm font-mono text-stone-500 uppercase mb-3">{date}</p>
+        {skills && skills.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+              {skills.map((skill, idx) => (
+                  <span key={idx} className="px-2 py-1 bg-stone-800 text-stone-300 border border-stone-700 text-xs rounded-full">
+                      {skill}
+                  </span>
+              ))}
+          </div>
+        )}
     </div>
   );
 };
@@ -78,6 +80,9 @@ const App: React.FC = () => {
   
   const [galleryIndex, setGalleryIndex] = useState(0);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -95,6 +100,21 @@ const App: React.FC = () => {
   const scrollToSection = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     setMenuOpen(false);
+    
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          const headerOffset = 100;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+      }, 100);
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       const headerOffset = 100;
@@ -143,7 +163,6 @@ const App: React.FC = () => {
             <a href="#experience" onClick={scrollToSection('experience')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.experience[lang]}</a>
             <a href="#certificate" onClick={scrollToSection('certificate')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.certificate[lang]}</a>
             <a href="#blog" onClick={scrollToSection('blog')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.blog[lang]}</a>
-            <a href="#posts" onClick={scrollToSection('posts')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.posts[lang]}</a>
             
             <button onClick={toggleLang} className="flex items-center gap-1 font-bold text-stone-800 dark:text-stone-200 hover:text-nobel-gold transition-colors ml-4 px-2 tracking-widest">
               <Globe size={16}/> {lang === 'tr' ? 'EN' : 'TR'}
@@ -222,7 +241,6 @@ const App: React.FC = () => {
             <a href="#experience" onClick={scrollToSection('experience')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.experience[lang]}</a>
             <a href="#certificate" onClick={scrollToSection('certificate')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.certificate[lang]}</a>
             <a href="#blog" onClick={scrollToSection('blog')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.blog[lang]}</a>
-            <a href="#posts" onClick={scrollToSection('posts')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.posts[lang]}</a>
               <a 
               href="#contact" 
               onClick={scrollToSection('contact')} 
@@ -235,6 +253,7 @@ const App: React.FC = () => {
       </AnimatePresence>
 
       {/* Hero Section */}
+      {location.pathname === '/' && (
       <header id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
         <HeroScene />
         
@@ -262,7 +281,9 @@ const App: React.FC = () => {
           </div>
         </div>
       </header>
+      )}
 
+      {location.pathname === '/' && (
       <main>
         {/* About Section */}
         <section id="about" className="py-24 bg-white dark:bg-emerald-950/10">
@@ -322,6 +343,21 @@ const App: React.FC = () => {
                    </div>
                </div>
             </div>
+          </div>
+        </section>
+
+        {/* LinkedIn Feed Section */}
+        <section className="py-24 bg-white dark:bg-stone-950 border-b border-stone-200 dark:border-stone-800 overflow-hidden">
+          <div className="container mx-auto px-6">
+             <div className="mb-12 text-center flex flex-col items-center">
+                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-100 dark:bg-stone-900 text-stone-600 dark:text-stone-400 text-xs font-bold tracking-widest uppercase rounded-full mb-6 border border-stone-200 dark:border-stone-800 shadow-sm">
+                     {lang === 'tr' ? 'Etkileşim' : 'Engagement'}
+                 </div>
+                 <h2 className="font-serif text-4xl text-stone-900 dark:text-white">LinkedIn Feed</h2>
+             </div>
+             <div className="max-w-4xl mx-auto md:p-8 rounded-3xl overflow-hidden shadow-lg border border-stone-200 dark:border-stone-800 bg-white">
+                <div className="elfsight-app-31c4d3c3-6a14-4e86-81e5-a69a1ca957e3" data-elfsight-app-lazy></div>
+             </div>
           </div>
         </section>
 
@@ -464,52 +500,7 @@ const App: React.FC = () => {
              </div>
         </section>
 
-        {/* Posts */}
-        <section id="posts" className="py-24 bg-white dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800">
-             <div className="container mx-auto px-6">
-                  <div className="text-center mb-16">
-                      <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.posts.label[lang]}</div>
-                      <h2 className="font-serif text-4xl text-stone-900 dark:text-white">{data.posts.title[lang]}</h2>
-                  </div>
-                  
-                  <div className="max-w-2xl mx-auto grid grid-cols-1 gap-12">
-                     {data.posts.items.map((post) => (
-                         <article key={post.id} className="bg-[#F9F8F4] dark:bg-stone-950 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 overflow-hidden">
-                             <div className="p-6 md:p-8">
-                                 <div className="flex items-center gap-4 mb-6">
-                                     <div className="w-12 h-12 rounded-full bg-nobel-gold flex items-center justify-center font-serif font-bold text-xl text-white shadow-sm">
-                                        A
-                                     </div>
-                                     <div>
-                                        <h4 className="font-bold text-stone-900 dark:text-stone-100">Ayşenur Akkaya Gül</h4>
-                                        <p className="text-xs text-stone-500 dark:text-stone-400">
-                                            {new Date(post.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                                        </p>
-                                     </div>
-                                 </div>
-                                 <div className="prose prose-stone dark:prose-invert max-w-none text-stone-700 dark:text-stone-300">
-                                    <p>{post.content[lang]}</p>
-                                 </div>
-                             </div>
-                             {post.image && (
-                                <div className="border-t border-stone-200 dark:border-stone-800">
-                                     <img src={post.image} alt="Post media" className="w-full h-auto object-cover max-h-[500px]" />
-                                </div>
-                             )}
-                             {post.images && post.images.length > 0 && (
-                                <div className={`border-t border-stone-200 dark:border-stone-800 grid gap-1 ${post.images.length === 1 ? 'grid-cols-1' : post.images.length === 2 ? 'grid-cols-2' : post.images.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
-                                     {post.images.map((img: string, idx: number) => (
-                                         <div key={idx} className="aspect-square relative overflow-hidden bg-stone-100 dark:bg-stone-900">
-                                             <img src={img} alt={`Post media ${idx + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 cursor-pointer" />
-                                         </div>
-                                     ))}
-                                </div>
-                             )}
-                         </article>
-                     ))}
-                  </div>
-             </div>
-        </section>
+
 
         {/* Blog & Notes */}
         <section id="blog" className="py-24 bg-[#F5F4F0] dark:bg-stone-950/30 border-t border-stone-200 dark:border-stone-800">
@@ -586,6 +577,9 @@ const App: React.FC = () => {
         </section>
 
       </main>
+      )}
+
+
 
       <footer className="bg-stone-950 text-stone-500 py-12">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
