@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HeroScene } from './components/QuantumScene';
-import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked } from 'lucide-react';
+import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked, Home } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Markdown from 'react-markdown';
@@ -101,6 +101,7 @@ const App: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPdf, setSelectedPdf] = useState<{title: string, type: string, url: string} | null>(null);
+  const [numPages, setNumPages] = useState<number | null>(null);
   const [darkMode, setDarkMode] = useState(false);
   
   const [galleryIndex, setGalleryIndex] = useState(0);
@@ -173,23 +174,28 @@ const App: React.FC = () => {
       
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#F9F8F4]/90 dark:bg-stone-900/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-4 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-8 h-8 bg-nobel-gold rounded-full flex items-center justify-center text-white font-serif font-bold text-xl shadow-sm pb-1">A</div>
-            <span className={`font-serif font-bold text-lg tracking-wide transition-opacity dark:text-white ${scrolled ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}>
-              AKKAYA <span className="font-normal text-stone-500 dark:text-stone-400">GÜL</span>
-            </span>
+        <div className="container mx-auto px-6 flex items-center justify-between">
+          
+          {/* Logo / Home Button */}
+          <div className="flex-none flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="w-10 h-10 rounded-full bg-stone-900 dark:bg-stone-100 flex items-center justify-center shadow-sm hover:opacity-80 transition-opacity">
+               <Home className="text-white dark:text-stone-900" size={20} />
+            </div>
           </div>
           
-          <div className="hidden lg:flex items-center gap-4 xl:gap-6 text-xs xl:text-sm font-medium tracking-wider text-stone-600 dark:text-stone-300">
+          {/* Centered Desktop Links */}
+          <div className="hidden lg:flex flex-1 justify-center items-center gap-4 xl:gap-8 text-xs xl:text-sm font-medium tracking-wider text-stone-600 dark:text-stone-300">
             <a href="#about" onClick={scrollToSection('about')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.about[lang]}</a>
             <a href="#orcid" onClick={scrollToSection('orcid')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.orcid[lang]}</a>
             <a href="#projects" onClick={scrollToSection('projects')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.projects[lang]}</a>
             <a href="#experience" onClick={scrollToSection('experience')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.experience[lang]}</a>
             <a href="#certificate" onClick={scrollToSection('certificate')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.certificate[lang]}</a>
             <a href="#blog" onClick={scrollToSection('blog')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.blog[lang]}</a>
-            
-            <button onClick={toggleLang} className="flex items-center gap-1 font-bold text-stone-800 dark:text-stone-200 hover:text-nobel-gold transition-colors ml-4 px-2 tracking-widest">
+          </div>
+
+          {/* Right Actions (Desktop) */}
+          <div className="hidden lg:flex flex-none justify-end items-center">
+            <button onClick={toggleLang} className="flex items-center gap-1 font-bold text-stone-800 dark:text-stone-200 hover:text-nobel-gold transition-colors px-2 tracking-widest">
               <Globe size={16}/> {lang === 'tr' ? 'EN' : 'TR'}
             </button>
             <button onClick={() => setDarkMode(!darkMode)} className="text-stone-800 dark:text-stone-200 hover:text-nobel-gold transition-colors ml-4">
@@ -202,7 +208,7 @@ const App: React.FC = () => {
             <a 
               href="#contact" 
               onClick={scrollToSection('contact')} 
-              className="px-5 py-2 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 rounded-full hover:bg-stone-800 dark:hover:bg-white transition-colors shadow-sm cursor-pointer ml-2"
+              className="px-5 py-2.5 bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 rounded-full hover:bg-stone-800 dark:hover:bg-white transition-colors shadow-sm cursor-pointer ml-6 tracking-wider font-medium text-xs uppercase"
             >
               {data.header.nav.contact[lang]}
             </a>
@@ -289,8 +295,8 @@ const App: React.FC = () => {
           <div className="inline-block mb-4 px-3 py-1 border border-nobel-gold text-nobel-gold text-xs tracking-[0.2em] uppercase font-bold rounded-full backdrop-blur-sm bg-white/30 dark:bg-stone-900/30">
              {data.hero.label[lang]}
           </div>
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-medium leading-[1.1] md:leading-[0.9] mb-8 text-stone-900 dark:text-stone-100 drop-shadow-sm">
-            {data.hero.title[lang]} <br/><span className="italic font-normal text-stone-600 dark:text-stone-400 text-3xl md:text-5xl block mt-4">{data.hero.subtitle[lang]}</span>
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-medium leading-[1.2] md:leading-[0.9] mb-8 text-stone-900 dark:text-stone-100 drop-shadow-sm">
+            {data.hero.title[lang]} <br/><span className="italic font-normal text-stone-600 dark:text-stone-400 text-2xl sm:text-3xl md:text-5xl block mt-4">{data.hero.subtitle[lang]}</span>
           </h1>
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-stone-700 dark:text-stone-300 font-light leading-relaxed mb-12">
             {data.hero.description[lang]}
@@ -330,8 +336,8 @@ const App: React.FC = () => {
 
         {/* About Section */}
         <section id="about" className="py-24 bg-white dark:bg-emerald-950/10">
-          <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
-            <div className="md:col-span-4 flex flex-col items-start">
+          <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-4 flex flex-col items-start">
               <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.about.label[lang]}</div>
               <h2 className="font-serif text-4xl mb-6 leading-tight text-stone-900 dark:text-stone-100">{data.about.title[lang]}</h2>
               <div className="w-16 h-1 bg-nobel-gold mb-8"></div>
@@ -342,7 +348,7 @@ const App: React.FC = () => {
                 </a>
               )}
             </div>
-            <div className="md:col-span-8 text-lg text-stone-600 dark:text-stone-300 leading-relaxed space-y-6">
+            <div className="lg:col-span-8 text-lg text-stone-600 dark:text-stone-300 leading-relaxed space-y-6">
               <p>
                 <span className="text-5xl float-left mr-3 mt-[-8px] font-serif text-nobel-gold">{data.about.p1[lang].charAt(0)}</span>{data.about.p1[lang].slice(1)}
               </p>
@@ -369,8 +375,8 @@ const App: React.FC = () => {
 
         {/* ORCID Summary Section */}
         <section id="orcid" className="py-24 bg-[#F5F4F0] dark:bg-stone-950 border-y border-stone-200 dark:border-stone-800">
-          <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            <div className="md:col-span-5 flex flex-col justify-center">
+          <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-5 flex flex-col justify-center">
               <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.orcid_summary.label[lang]}</div>
               <h2 className="font-serif text-4xl mb-6 text-stone-900 dark:text-stone-100 flex items-center gap-3">
                  <span className="w-8 h-8 rounded-full bg-[#A6CE39] flex items-center justify-center text-white text-sm font-bold shadow-sm">iD</span>
@@ -385,24 +391,24 @@ const App: React.FC = () => {
               </a>
             </div>
             
-            <div className="md:col-span-7">
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                   <div className="bg-white dark:bg-stone-900 p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
+            <div className="lg:col-span-7">
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
+                   <div className="bg-white dark:bg-stone-900 p-6 xl:p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
                        <Briefcase className="text-nobel-gold mb-4 group-hover:scale-110 transition-transform" size={40} strokeWidth={1.5} />
                        <h3 className="font-serif text-3xl text-stone-900 dark:text-stone-100 mb-2">5</h3>
-                       <p className="text-sm font-medium text-stone-500 uppercase tracking-widest">{data.orcid_summary.stats.employment[lang]}</p>
+                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">{data.orcid_summary.stats.employment[lang]}</p>
                    </div>
                    
-                   <div className="bg-white dark:bg-stone-900 p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
+                   <div className="bg-white dark:bg-stone-900 p-6 xl:p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
                        <GraduationCap className="text-nobel-gold mb-4 group-hover:scale-110 transition-transform" size={40} strokeWidth={1.5} />
                        <h3 className="font-serif text-3xl text-stone-900 dark:text-stone-100 mb-2">4</h3>
-                       <p className="text-sm font-medium text-stone-500 uppercase tracking-widest">{data.orcid_summary.stats.education[lang]}</p>
+                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">{data.orcid_summary.stats.education[lang]}</p>
                    </div>
                    
-                   <div className="bg-white dark:bg-stone-900 p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
+                   <div className="bg-white dark:bg-stone-900 p-6 xl:p-8 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 flex flex-col items-center text-center group hover:border-nobel-gold transition-colors">
                        <BookOpen className="text-nobel-gold mb-4 group-hover:scale-110 transition-transform" size={40} strokeWidth={1.5} />
                        <h3 className="font-serif text-3xl text-stone-900 dark:text-stone-100 mb-2">2</h3>
-                       <p className="text-sm font-medium text-stone-500 uppercase tracking-widest">{data.orcid_summary.stats.works[lang]}</p>
+                       <p className="text-xs font-medium text-stone-500 uppercase tracking-wider">{data.orcid_summary.stats.works[lang]}</p>
                    </div>
                </div>
             </div>
@@ -475,7 +481,7 @@ const App: React.FC = () => {
                        </div>
                        <h2 className="font-serif text-3xl md:text-4xl text-white">{data.teaching.title[lang]}</h2>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                       {data.teaching.courses.map((course, idx) => (
                           <div key={idx} className="bg-stone-800/50 p-8 rounded-2xl border border-stone-700 hover:border-nobel-gold transition-colors">
                               <School className="text-nobel-gold mb-6" size={32} />
@@ -555,8 +561,8 @@ const App: React.FC = () => {
 
         {/* Certificates & Skills */}
         <section id="certificate" className="py-24 bg-white dark:bg-emerald-950/20 border-t border-stone-200 dark:border-stone-800">
-             <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12">
-                <div className="md:col-span-5 flex flex-col justify-center order-2 md:order-1">
+             <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div className="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1">
                     <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.certificates.label[lang]}</div>
                     <h2 className="font-serif text-4xl mb-6 text-stone-900 dark:text-stone-100">{data.certificates.title[lang]}</h2>
                     <div className="mb-8">
@@ -581,7 +587,7 @@ const App: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className="md:col-span-7 relative order-1 md:order-2">
+                <div className="lg:col-span-7 relative order-1 lg:order-2">
                     <div className="aspect-[4/3] bg-[#F5F4F0] dark:bg-stone-800 rounded-xl flex items-center justify-center relative border border-stone-200 dark:border-stone-700 shadow-inner overflow-hidden">
                          {/* Abstract simple design for cert section */}
                          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.8)_0%,transparent_70%)]"></div>
@@ -738,7 +744,7 @@ const App: React.FC = () => {
                   <div className="inline-block mb-3 text-xs font-bold tracking-widest text-nobel-gold uppercase">{data.contact.label[lang]}</div>
                   <h2 className="font-serif text-4xl md:text-5xl mb-12 text-white">{data.contact.title[lang]}</h2>
                   
-                  <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+                  <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
                       <a href={`mailto:${data.contact.email}`} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open(`mailto:${data.contact.email}`, '_blank'); }} className="flex flex-col items-center gap-4 group">
                           <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-nobel-gold group-hover:scale-110 group-hover:bg-nobel-gold group-hover:text-stone-900 transition-all duration-300">
                               <Mail size={24} />
@@ -818,7 +824,7 @@ const App: React.FC = () => {
                               <h3 className="font-serif font-medium text-stone-900 dark:text-stone-100 text-lg md:text-xl truncate">{selectedPdf.title}</h3>
                               <p className="text-xs text-stone-500 dark:text-stone-400 font-bold uppercase tracking-widest truncate mt-1">{selectedPdf.type}</p>
                           </div>
-                          <button onClick={() => setSelectedPdf(null)} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors shrink-0">
+                          <button onClick={() => { setSelectedPdf(null); setNumPages(null); }} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors shrink-0">
                               <X size={24}/>
                           </button>
                      </div>
@@ -826,6 +832,7 @@ const App: React.FC = () => {
                            <Document 
                               file={selectedPdf.url} 
                               className="flex flex-col items-center py-8 gap-4"
+                              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                               loading={
                                 <div className="flex flex-col items-center justify-center h-64 text-stone-500">
                                   <Loader2 className="animate-spin mb-4" size={32} />
@@ -840,8 +847,16 @@ const App: React.FC = () => {
                                 </div>
                               }
                            >
-                              <Page pageNumber={1} width={Math.min(window.innerWidth * 0.9, 800)} className="shadow-lg" renderTextLayer={false} renderAnnotationLayer={false} />
-                              {/* Only rendering first page for preview, full integration could map through numPages */}
+                              {Array.from(new Array(numPages || 0), (el, index) => (
+                                <Page 
+                                  key={`page_${index + 1}`}
+                                  pageNumber={index + 1} 
+                                  width={Math.min(window.innerWidth * 0.9, 800)} 
+                                  className="shadow-lg mb-4" 
+                                  renderTextLayer={false} 
+                                  renderAnnotationLayer={false} 
+                                />
+                              ))}
                            </Document>
                      </div>
                   </motion.div>
