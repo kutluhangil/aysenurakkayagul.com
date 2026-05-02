@@ -143,6 +143,7 @@ const App: React.FC = () => {
             <a href="#experience" onClick={scrollToSection('experience')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.experience[lang]}</a>
             <a href="#certificate" onClick={scrollToSection('certificate')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.certificate[lang]}</a>
             <a href="#blog" onClick={scrollToSection('blog')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.blog[lang]}</a>
+            <a href="#posts" onClick={scrollToSection('posts')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.posts[lang]}</a>
             
             <button onClick={toggleLang} className="flex items-center gap-1 font-bold text-stone-800 dark:text-stone-200 hover:text-nobel-gold transition-colors ml-4 px-2 tracking-widest">
               <Globe size={16}/> {lang === 'tr' ? 'EN' : 'TR'}
@@ -221,6 +222,7 @@ const App: React.FC = () => {
             <a href="#experience" onClick={scrollToSection('experience')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.experience[lang]}</a>
             <a href="#certificate" onClick={scrollToSection('certificate')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.certificate[lang]}</a>
             <a href="#blog" onClick={scrollToSection('blog')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.blog[lang]}</a>
+            <a href="#posts" onClick={scrollToSection('posts')} className="hover:text-nobel-gold transition-colors cursor-pointer uppercase">{data.header.nav.posts[lang]}</a>
               <a 
               href="#contact" 
               onClick={scrollToSection('contact')} 
@@ -459,6 +461,53 @@ const App: React.FC = () => {
                         <ChevronRight size={24} />
                      </button>
                  </div>
+             </div>
+        </section>
+
+        {/* Posts */}
+        <section id="posts" className="py-24 bg-white dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800">
+             <div className="container mx-auto px-6">
+                  <div className="text-center mb-16">
+                      <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.posts.label[lang]}</div>
+                      <h2 className="font-serif text-4xl text-stone-900 dark:text-white">{data.posts.title[lang]}</h2>
+                  </div>
+                  
+                  <div className="max-w-2xl mx-auto grid grid-cols-1 gap-12">
+                     {data.posts.items.map((post) => (
+                         <article key={post.id} className="bg-[#F9F8F4] dark:bg-stone-950 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-800 overflow-hidden">
+                             <div className="p-6 md:p-8">
+                                 <div className="flex items-center gap-4 mb-6">
+                                     <div className="w-12 h-12 rounded-full bg-nobel-gold flex items-center justify-center font-serif font-bold text-xl text-white shadow-sm">
+                                        A
+                                     </div>
+                                     <div>
+                                        <h4 className="font-bold text-stone-900 dark:text-stone-100">Ayşenur Akkaya Gül</h4>
+                                        <p className="text-xs text-stone-500 dark:text-stone-400">
+                                            {new Date(post.date).toLocaleDateString(lang === 'tr' ? 'tr-TR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        </p>
+                                     </div>
+                                 </div>
+                                 <div className="prose prose-stone dark:prose-invert max-w-none text-stone-700 dark:text-stone-300">
+                                    <p>{post.content[lang]}</p>
+                                 </div>
+                             </div>
+                             {post.image && (
+                                <div className="border-t border-stone-200 dark:border-stone-800">
+                                     <img src={post.image} alt="Post media" className="w-full h-auto object-cover max-h-[500px]" />
+                                </div>
+                             )}
+                             {post.images && post.images.length > 0 && (
+                                <div className={`border-t border-stone-200 dark:border-stone-800 grid gap-1 ${post.images.length === 1 ? 'grid-cols-1' : post.images.length === 2 ? 'grid-cols-2' : post.images.length === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+                                     {post.images.map((img: string, idx: number) => (
+                                         <div key={idx} className="aspect-square relative overflow-hidden bg-stone-100 dark:bg-stone-900">
+                                             <img src={img} alt={`Post media ${idx + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 cursor-pointer" />
+                                         </div>
+                                     ))}
+                                </div>
+                             )}
+                         </article>
+                     ))}
+                  </div>
              </div>
         </section>
 
