@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HeroScene } from './components/QuantumScene';
-import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked, Home } from 'lucide-react';
+import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked, Home, ZoomIn, ZoomOut, Link } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Markdown from 'react-markdown';
@@ -63,8 +63,9 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number, s
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-const PublicationCard = ({ title, type, citation, onClick, lang }: { title: string, type: string, citation?: string, onClick?: () => void, lang: Language }) => {
+const PublicationCard = ({ id, title, type, citation, onClick, lang }: { id: string, title: string, type: string, citation?: string, onClick?: () => void, lang: Language }) => {
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -75,13 +76,28 @@ const PublicationCard = ({ title, type, citation, onClick, lang }: { title: stri
     }
   };
 
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = new URL(window.location.href);
+    url.hash = id;
+    navigator.clipboard.writeText(url.toString());
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
+
   return (
-      <div onClick={onClick} className="p-6 bg-[#F9F8F4] dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg border-l-4 border-l-nobel-gold group hover:bg-white dark:hover:bg-stone-700 transition-colors duration-300 cursor-pointer flex flex-col">
+      <div id={id} onClick={onClick} className="p-6 bg-[#F9F8F4] dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg border-l-4 border-l-nobel-gold group hover:bg-white dark:hover:bg-stone-700 transition-colors duration-300 cursor-pointer flex flex-col scroll-mt-24">
           <p className="font-serif italic text-lg lg:text-xl text-stone-800 dark:text-stone-200 mb-4 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
               "{title}"
           </p>
-          <div className="flex flex-wrap justify-between items-center mt-auto w-full gap-4">
-              <span className="text-xs font-bold text-stone-500 dark:text-stone-400 tracking-wider uppercase">— {type}</span>
+          <div className="flex flex-wrap items-center mt-auto w-full gap-4">
+              <span className="text-xs font-bold text-stone-500 dark:text-stone-400 tracking-wider uppercase mr-auto">— {type}</span>
+              
+              <button onClick={handleCopyLink} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'Bağlantıyı Kopyala' : 'Copy Link'}>
+                <Link size={14} />
+                {linkCopied ? (lang === 'tr' ? 'Kopyalandı!' : 'Copied!') : (lang === 'tr' ? 'Bağlantı' : 'Link')}
+              </button>
+
               {citation && (
                  <button onClick={handleCopy} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'Alıntıyı Kopyala' : 'Copy Citation'}>
                     <Copy size={14} />
@@ -102,6 +118,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPdf, setSelectedPdf] = useState<{title: string, type: string, url: string} | null>(null);
   const [numPages, setNumPages] = useState<number | null>(null);
+  const [pdfZoom, setPdfZoom] = useState(1);
   const [darkMode, setDarkMode] = useState(false);
   
   const [galleryIndex, setGalleryIndex] = useState(0);
@@ -532,7 +549,7 @@ const App: React.FC = () => {
                 <div className="max-w-4xl mx-auto grid grid-cols-1 gap-6">
                     {filteredPublications.length === 0 && <p className="text-stone-500 text-center italic">{lang === 'tr' ? 'Sonuç bulunamadı...' : 'No results found...'}</p>}
                     {filteredPublications.map((pub, idx) => (
-                        <PublicationCard key={idx} lang={lang} title={pub.title[lang]} type={pub.type[lang]} citation={pub.citation} onClick={() => pub.pdfUrl ? setSelectedPdf({ title: pub.title[lang], type: pub.type[lang], url: pub.pdfUrl }) : null} />
+                        <PublicationCard key={idx} id={`publication-${idx}`} lang={lang} title={pub.title[lang]} type={pub.type[lang]} citation={pub.citation} onClick={() => pub.pdfUrl ? setSelectedPdf({ title: pub.title[lang], type: pub.type[lang], url: pub.pdfUrl }) : null} />
                     ))}
                 </div>
             </div>
@@ -824,26 +841,49 @@ const App: React.FC = () => {
                               <h3 className="font-serif font-medium text-stone-900 dark:text-stone-100 text-lg md:text-xl truncate">{selectedPdf.title}</h3>
                               <p className="text-xs text-stone-500 dark:text-stone-400 font-bold uppercase tracking-widest truncate mt-1">{selectedPdf.type}</p>
                           </div>
-                          <button onClick={() => { setSelectedPdf(null); setNumPages(null); }} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors shrink-0">
-                              <X size={24}/>
-                          </button>
+                          
+                          <div className="flex items-center gap-2 shrink-0">
+                              <button onClick={() => setPdfZoom(prev => Math.max(0.5, prev - 0.25))} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors" title={lang === 'tr' ? 'Uzaklaştır' : 'Zoom Out'}>
+                                  <ZoomOut size={20}/>
+                              </button>
+                              <button onClick={() => setPdfZoom(prev => Math.min(3, prev + 0.25))} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors" title={lang === 'tr' ? 'Yakınlaştır' : 'Zoom In'}>
+                                  <ZoomIn size={20}/>
+                              </button>
+                              <div className="w-px h-6 bg-stone-300 dark:bg-stone-700 mx-1"></div>
+                              <a href={selectedPdf.url} download target="_blank" rel="noopener noreferrer" className="p-2 text-stone-400 hover:text-nobel-gold hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors" title={lang === 'tr' ? 'İndir' : 'Download'}>
+                                  <Download size={20}/>
+                              </a>
+                              <button onClick={() => { setSelectedPdf(null); setNumPages(null); setPdfZoom(1); }} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors">
+                                  <X size={24}/>
+                              </button>
+                          </div>
                      </div>
                      <div className="flex-1 bg-stone-100 dark:bg-stone-800 overflow-y-auto w-full relative">
                            <Document 
                               file={selectedPdf.url} 
-                              className="flex flex-col items-center py-8 gap-4"
+                              className="flex flex-col items-center py-8 gap-4 min-h-full"
                               onLoadSuccess={({ numPages }) => setNumPages(numPages)}
                               loading={
-                                <div className="flex flex-col items-center justify-center h-64 text-stone-500">
-                                  <Loader2 className="animate-spin mb-4" size={32} />
-                                  <p>{lang === 'tr' ? 'PDF Yükleniyor...' : 'Loading PDF...'}</p>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-100 dark:bg-stone-800 w-full h-full z-10">
+                                  <div className="relative w-32 h-32 flex items-center justify-center">
+                                    <div className="absolute inset-0 rounded-full border-4 border-stone-200 dark:border-stone-700"></div>
+                                    <div className="absolute inset-0 rounded-full border-4 border-nobel-gold border-t-transparent animate-spin"></div>
+                                    <Loader2 className="absolute text-nobel-gold animate-pulse" size={32} />
+                                  </div>
+                                  <p className="mt-6 text-stone-600 dark:text-stone-400 font-medium tracking-wide animate-pulse">{lang === 'tr' ? 'PDF Yükleniyor...' : 'Loading PDF...'}</p>
                                 </div>
                               }
                               error={
-                                <div className="flex flex-col items-center justify-center h-64 text-stone-500 px-6 text-center">
-                                  <FileIcon size={48} className="mb-4 opacity-50" />
-                                  <p className="mb-2">{lang === 'tr' ? 'PDF yüklenirken bir hata oluştu veya dosya bulunamadı.' : 'Failed to load PDF or file not found.'}</p>
-                                  <p className="text-sm opacity-70">URL: {selectedPdf.url}</p>
+                                <div className="flex flex-col items-center justify-center w-full h-full text-stone-500 px-6 text-center mt-20">
+                                  <div className="w-20 h-20 bg-stone-200 dark:bg-stone-700 rounded-full flex items-center justify-center mb-6">
+                                    <FileIcon size={32} className="text-stone-400 dark:text-stone-500" />
+                                  </div>
+                                  <h3 className="text-xl font-serif text-stone-800 dark:text-stone-200 mb-2">{lang === 'tr' ? 'PDF yüklenemedi' : 'Failed to load PDF'}</h3>
+                                  <p className="mb-6 max-w-md">{lang === 'tr' ? 'Dosya bulunamadı veya biçim desteklenmiyor. Aşağıdaki bağlantıdan doğrudan indirmeyi deneyebilirsiniz.' : 'The file could not be found or the format is not supported. You can try downloading it directly from the link below.'}</p>
+                                  <a href={selectedPdf.url} download target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-nobel-gold hover:bg-stone-900 dark:hover:bg-white text-white dark:text-stone-900 rounded-full transition-colors flex items-center gap-2 font-medium">
+                                      <Download size={18} />
+                                      {lang === 'tr' ? 'Doğrudan İndir' : 'Direct Download'}
+                                  </a>
                                 </div>
                               }
                            >
@@ -851,8 +891,8 @@ const App: React.FC = () => {
                                 <Page 
                                   key={`page_${index + 1}`}
                                   pageNumber={index + 1} 
-                                  width={Math.min(window.innerWidth * 0.9, 800)} 
-                                  className="shadow-lg mb-4" 
+                                  width={Math.min(window.innerWidth * 0.9, 800) * pdfZoom} 
+                                  className="shadow-lg mb-4 transition-all duration-200" 
                                   renderTextLayer={false} 
                                   renderAnnotationLayer={false} 
                                 />
