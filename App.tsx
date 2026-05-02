@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HeroScene } from './components/QuantumScene';
-import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay } from 'lucide-react';
+import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Markdown from 'react-markdown';
@@ -349,6 +349,20 @@ const App: React.FC = () => {
               <p>
                 {data.about.p2[lang]}
               </p>
+              
+              <div className="mt-12 pt-8 border-t border-stone-200 dark:border-stone-800">
+                <h3 className="font-serif text-2xl text-stone-900 dark:text-stone-100 mb-6 flex items-center gap-3">
+                  <Microscope className="text-nobel-gold" />
+                  {data.research.title[lang]}
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {data.research.items.map((item, idx) => (
+                    <span key={idx} className="px-4 py-2 bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 rounded-full text-sm font-medium border border-stone-200 dark:border-stone-700 shadow-sm">
+                      {item[lang]}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -471,6 +485,33 @@ const App: React.FC = () => {
                       ))}
                   </div>
                 </div>
+
+                {/* Mentorship / Theses */}
+                <div className="mt-24 pt-24 border-t border-stone-800">
+                  <div className="mb-12 text-center lg:text-left">
+                       <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-800 text-nobel-gold text-xs font-bold tracking-widest uppercase rounded-full mb-6 border border-stone-700">
+                           {data.theses.label[lang]}
+                       </div>
+                       <h2 className="font-serif text-3xl md:text-4xl text-white flex items-center gap-4 justify-center lg:justify-start">
+                           <Users className="text-stone-600" size={32} />
+                           {data.theses.title[lang]}
+                       </h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {data.theses.items.map((thesis, idx) => (
+                          <div key={idx} className="bg-stone-900 p-6 rounded-2xl border border-stone-800 hover:border-stone-600 transition-colors">
+                              <div className="flex justify-between items-start mb-4">
+                                  <h3 className="font-serif text-xl text-white leading-tight pr-4">{thesis.student}</h3>
+                                  <span className="text-xs font-mono px-2 py-1 bg-stone-800 text-nobel-gold rounded">{thesis.year}</span>
+                              </div>
+                              <p className="text-stone-400 text-sm mb-4 leading-relaxed font-medium">"{thesis.title[lang]}"</p>
+                              <div className="inline-flex items-center gap-2 text-xs text-stone-500 font-medium uppercase tracking-wider">
+                                  <BookMarked size={14} /> {thesis.type[lang]}
+                              </div>
+                          </div>
+                      ))}
+                  </div>
+                </div>
             </div>
         </section>
 
@@ -574,6 +615,53 @@ const App: React.FC = () => {
                              </div>
                          </div>
                     ))}
+                </div>
+            </div>
+        </section>
+
+        {/* Affiliations & Editorial */}
+        <section id="affiliations" className="py-24 bg-white dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800">
+            <div className="container mx-auto px-6">
+                <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+                    {/* Memberships */}
+                    <div>
+                        <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.affiliations.label[lang]}</div>
+                        <h3 className="flex items-center gap-3 font-serif text-3xl md:text-4xl text-stone-900 dark:text-white mb-8">
+                            <Users className="text-nobel-gold" />
+                            {lang === 'tr' ? 'Bilimsel Üyelikler' : 'Memberships'}
+                        </h3>
+                        <ul className="space-y-4">
+                            {data.affiliations.memberships.map((membership, idx) => (
+                                <li key={idx} className="flex items-start gap-4 p-4 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-900/50 transition-colors border border-transparent hover:border-stone-100 dark:hover:border-stone-800">
+                                    <BookmarkCheck className="text-nobel-gold shrink-0 mt-1" size={24} />
+                                    <span className="text-lg text-stone-700 dark:text-stone-300 font-medium">
+                                        {membership[lang]}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Editorial & Reviewer */}
+                    <div>
+                        <div className="inline-block mb-3 text-xs font-bold tracking-widest text-transparent uppercase select-none">&nbsp;</div>
+                        <h3 className="flex items-center gap-3 font-serif text-3xl md:text-4xl text-stone-900 dark:text-white mb-8">
+                            <LayoutList className="text-nobel-gold" />
+                            {lang === 'tr' ? 'Editörlük & Hakemlik' : 'Editorial Roles'}
+                        </h3>
+                        <div className="space-y-4">
+                            {data.affiliations.editorial.map((item, idx) => (
+                                <div key={idx} className="p-5 rounded-xl bg-[#F5F4F0] dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <span className="text-lg font-serif text-stone-900 dark:text-stone-100 italic">
+                                        {item.journal}
+                                    </span>
+                                    <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded-full shrink-0 text-center">
+                                        {item.role[lang]}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

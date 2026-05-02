@@ -122,6 +122,37 @@ export const data = {
       }
     ]
   },
+  research: {
+    label: { tr: "UZMANLIK", en: "EXPERTISE" },
+    title: { tr: "Araştırma Alanları", en: "Research Interests" },
+    items: [
+      { tr: "Yenidoğan Yoğun Bakım", en: "Neonatal Intensive Care" },
+      { tr: "Pediatrik Ağrı Yönetimi", en: "Pediatric Pain Management" },
+      { tr: "Anne-Bebek Etkileşimi", en: "Mother-Infant Interaction" },
+      { tr: "Hemşirelikte İnovasyon", en: "Innovation in Nursing" }
+    ]
+  },
+  theses: {
+    label: { tr: "DANIŞMANLIKLAR", en: "MENTORSHIP" },
+    title: { tr: "Yönetilen Tezler", en: "Supervised Theses" },
+    items: [
+      { student: "Ayşe Yılmaz", title: { tr: "Prematüre bebeklerde ağrı yönetimi üzerine bir çalışma...", en: "A study on pain management in premature infants..." }, year: "2023", type: { tr: "Yüksek Lisans Tezi", en: "Master's Thesis" } },
+      { student: "Mehmet Demir", title: { tr: "Yenidoğan yoğun bakımda aile merkezli bakım modelleri...", en: "Family-centered care models in NICU..." }, year: "Devam Ediyor", type: { tr: "Yüksek Lisans Tezi", en: "Master's Thesis" } }
+    ]
+  },
+  affiliations: {
+    label: { tr: "AKADEMİK HİZMETLER", en: "ACADEMIC SERVICES" },
+    title: { tr: "Üyelikler ve Hakemlikler", en: "Memberships & Editorial" },
+    memberships: [
+      { tr: "Türk Pediatri Kurumu", en: "Turkish Pediatric Association" },
+      { tr: "Neonatoloji Hemşireleri Derneği", en: "Neonatal Nurses Society" },
+      { tr: "Uluslararası Hemşireler Konseyi (ICN)", en: "International Council of Nurses (ICN)" }
+    ],
+    editorial: [
+      { journal: "Journal of Pediatric Nursing", role: { tr: "Hakem", en: "Reviewer" } },
+      { journal: "Türkiye Klinikleri Hemşirelik Bilimleri Dergisi", role: { tr: "Yayın Kurulu Üyesi", en: "Editorial Board Member" } }
+    ]
+  },
   projects: {
     label: { tr: "YAYINLAR & PROJELER", en: "PUBLICATIONS & PROJECTS" },
     title: { tr: "Akademik Çalışmalar", en: "Academic Works" },
