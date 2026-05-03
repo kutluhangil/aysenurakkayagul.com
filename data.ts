@@ -70,16 +70,48 @@ export const data = {
     title: { tr: "Verilen Dersler", en: "Courses Taught" },
     courses: [
       {
-        name: { tr: "Çocuk Sağlığı ve Hastalıkları Hemşireliği", en: "Child Health and Diseases Nursing" },
-        desc: { tr: "Lisans düzeyinde temel pediatri hemşireliği prensipleri ve çocuk sağlığına bütüncül yaklaşım.", en: "Undergraduate level fundamental pediatric nursing principles and holistic approach to child health." }
+        name: { tr: "Tıbbi İlk Yardım", en: "Medical First Aid" },
+        desc: { tr: "Acil durumlarda hayat kurtarıcı temel ilk yardım müdahaleleri ve prensipleri üzerine teorik ve pratik eğitim.", en: "Theoretical and practical training on life-saving basic first aid interventions and principles in emergencies." }
       },
       {
-        name: { tr: "İlk ve Acil Yardım", en: "First and Emergency Aid" },
-        desc: { tr: "Acil durumlarda kritik karar verme, hayat kurtarıcı müdahaleler ve temel yaşam desteği.", en: "Critical decision making in emergencies, life-saving interventions, and basic life support." }
+        name: { tr: "Travma I & II", en: "Trauma I & II" },
+        desc: { tr: "Travma hastalarına yönelik hastane öncesi değerlendirme, stabilizasyon ve acil müdahale teknikleri.", en: "Pre-hospital assessment, stabilization, and emergency intervention techniques for trauma patients." }
       },
       {
-        name: { tr: "Temel ve İleri Yaşam Desteği", en: "Basic and Advanced Life Support" },
-        desc: { tr: "Profesyonel yaşam desteği protokolleri, CPR uygulamaları ve hava yolu yönetimi.", en: "Professional life support protocols, CPR applications, and airway management." }
+        name: { tr: "Acil Hasta Bakımı I, II & III", en: "Emergency Patient Care I, II & III" },
+        desc: { tr: "Farklı yaş grupları ve spesifik acil vakalarda olay yeri yönetimi ile kapsamlı tıbbi hasta bakımı.", en: "Comprehensive medical patient care and scene management in different age groups and specific emergencies." }
+      },
+      {
+        name: { tr: "Klinik Uygulama I & II", en: "Clinical Practice I & II" },
+        desc: { tr: "Öğrencilerin acil servis, ambulans ve benzeri klinik alanlarda teorik bilgilerini pratiğe döktüğü saha eğitimleri.", en: "Field training where students put their theoretical knowledge into practice in clinical areas such as ER and ambulances." }
+      },
+      {
+        name: { tr: "Acil Sağlık Hizmetleri", en: "Emergency Health Services" },
+        desc: { tr: "Hastane öncesi geniş çaplı acil sağlık sistemlerinin işleyişi, organizasyonu ve yönetimi konuları.", en: "The operation, organization, and management of pre-hospital comprehensive emergency health systems." }
+      },
+      {
+        name: { tr: "Temel Mesleki Beceriler", en: "Basic Vocational Skills" },
+        desc: { tr: "Geleceğin sağlık profesyonelleri için hayati önem taşıyan temel ve pratik mesleki becerilerin kazandırılması.", en: "Acquisition of basic and practical vocational skills that are vital for future healthcare professionals." }
+      },
+      {
+        name: { tr: "Staj", en: "Internship" },
+        desc: { tr: "Sahada profesyoneller eşliğinde gerçek hasta bakımı süreçleriyle deneyim kazanma ve uygulama.", en: "Gaining experience and practicing real patient care processes in the field accompanied by professionals." }
+      },
+      {
+        name: { tr: "Ebelik – Klinik Uygulama", en: "Midwifery – Clinical Practice" },
+        desc: { tr: "Ebelik öğrencileri için tasarlanmış ve anne-bebek sağlığına odaklanan klinik saha uygulama süreçleri.", en: "Clinical field practice processes designed for midwifery students and focusing on maternal and infant health." }
+      },
+      {
+        name: { tr: "Çevre ve Sosyal Sorumluluk", en: "Environmental and Social Responsibility" },
+        desc: { tr: "Topluma ve çevreye duyarlı bireyler yetiştirmeyi amaçlayan akademik sürdürülebilirlik ve sosyal farkındalık projeleri.", en: "Academic sustainability and social awareness projects aimed at raising individuals sensitive to society and the environment." }
+      },
+      {
+        name: { tr: "Sağlık Okuryazarlığı", en: "Health Literacy" },
+        desc: { tr: "Sağlıklı yaşam kararları alabilmek için tıbbi ve koruyucu sağlık bilgilerinin doğru anlaşılması ve yorumlanması.", en: "Accurate understanding and interpretation of medical and preventive health information to take healthy lifestyle decisions." }
+      },
+      {
+        name: { tr: "Ambulans Eğitimi I (Bölüm 1 & 2)", en: "Ambulance Training I (Section 1 & 2)" },
+        desc: { tr: "Ambulans donanımlarının teknik kullanımı ile hastane öncesi acil hasta ve yaralı taşıma prensiplerinin pratiği.", en: "Technical use of ambulance equipment and the practice of pre-hospital emergency patient transport principles." }
       }
     ]
   },
@@ -256,6 +288,10 @@ export const data = {
         role: { tr: "Öğretim Görevlisi - İlk ve Acil Yardım", en: "Lecturer - First and Emergency Aid" },
         company: "Fenerbahçe Üniversitesi",
         date: { tr: "Şubat 2022 - Günümüz", en: "February 2022 - Present" },
+        description: { 
+          tr: "Verilen Dersler: Tıbbi İlk Yardım, Travma I, Travma II, Acil Hasta Bakımı I, Acil Hasta Bakımı II, Acil Hasta Bakımı III, Klinik Uygulama I, Klinik Uygulama 2, Acil Sağlık Hizmetleri, Staj, Temel Mesleki Beceriler, Ebelik – Klinik Uygulama, Çevre ve Sosyal Sorumluluk, Sağlık Okuryazarlığı, Ambulans Eğitimi I.", 
+          en: "Courses Taught: Medical First Aid, Trauma I, Trauma II, Emergency Patient Care I, Emergency Patient Care II, Emergency Patient Care III, Clinical Practice I, Clinical Practice 2, Emergency Health Services, Internship, Basic Vocational Skills, Midwifery – Clinical Practice, Environmental and Social Responsibility, Health Literacy, Ambulance Training I." 
+        },
         skills: { tr: ["Hemşirelik Eğitimi", "Akademik Danışmanlık", "İlk Yardım"], en: ["Nursing Education", "Academic Mentoring", "First Aid"] }
       },
       {

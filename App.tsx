@@ -14,13 +14,16 @@ import { data, Language } from './data';
 
 import { BrowserRouter as Router, useNavigate, useLocation } from 'react-router-dom';
 
-const ExperienceCard = ({ role, company, date, delay, skills }: { role: string, company: string, date: string, delay: string, skills?: string[] }) => {
+const ExperienceCard = ({ role, company, date, delay, description, skills }: { role: string, company: string, date: string, delay: string, description?: string, skills?: string[] }) => {
   return (
     <div className="relative pl-8 border-l-2 border-stone-700 animate-fade-in-up" style={{ animationDelay: delay }}>
         <div className="absolute w-4 h-4 bg-stone-900 border-2 border-nobel-gold rounded-full -left-[9px] top-1"></div>
         <h4 className="text-xl font-medium text-white mb-1">{role}</h4>
         <p className="text-stone-400 mb-2">{company}</p>
         <p className="text-sm font-mono text-stone-500 uppercase mb-3">{date}</p>
+        {description && (
+            <p className="text-stone-300 text-sm leading-relaxed mb-4">{description}</p>
+        )}
         {skills && skills.length > 0 && (
           <div className="flex flex-wrap gap-2">
               {skills.map((skill, idx) => (
@@ -542,7 +545,7 @@ const App: React.FC = () => {
                         <div className="space-y-8">
                             {filteredJobs.length === 0 && <p className="text-stone-500 italic text-sm">{lang === 'tr' ? 'Sonuç bulunamadı...' : 'No results found...'}</p>}
                             {filteredJobs.map((job, idx) => (
-                                <ExperienceCard key={idx} role={job.role[lang]} company={job.company} date={job.date[lang]} skills={job.skills ? job.skills[lang] : undefined} delay={`${idx * 0.1}s`} />
+                                <ExperienceCard key={idx} role={job.role[lang]} company={job.company} date={job.date[lang]} description={job.description ? job.description[lang] : undefined} skills={job.skills ? job.skills[lang] : undefined} delay={`${idx * 0.1}s`} />
                             ))}
                         </div>
                      </div>
