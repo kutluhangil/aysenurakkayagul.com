@@ -776,13 +776,15 @@ const App: React.FC = () => {
                   <h2 className="font-serif text-4xl md:text-5xl mb-12 text-white">{data.contact.title[lang]}</h2>
                   
                   <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 text-left">
-                     <div>
-                        <h3 className="font-serif text-3xl mb-6 text-white">{lang === 'tr' ? 'İletişime Geçin' : 'Get in Touch'}</h3>
-                        <p className="text-stone-400 mb-10 leading-relaxed text-lg">
-                           {lang === 'tr' ? 'Akademik iş birlikleri, sorularınız veya projeler hakkında konuşmak için bana ulaşabilirsiniz.' : 'Feel free to reach out for academic collaborations, questions, or to discuss projects.'}
-                        </p>
+                     <div className="flex flex-col h-full">
+                        <div>
+                            <h3 className="font-serif text-3xl mb-6 text-white">{lang === 'tr' ? 'İletişime Geçin' : 'Get in Touch'}</h3>
+                            <p className="text-stone-400 leading-relaxed text-lg mb-8">
+                               {lang === 'tr' ? 'Akademik iş birlikleri, sorularınız veya projeler hakkında konuşmak için bana ulaşabilirsiniz.' : 'Feel free to reach out for academic collaborations, questions, or to discuss projects.'}
+                            </p>
+                        </div>
                         
-                        <div className="flex flex-col gap-6">
+                        <div className="flex flex-col gap-5 flex-grow justify-end">
                             <a href={`mailto:${data.contact.email}`} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open(`mailto:${data.contact.email}`, '_blank'); }} className="flex items-center gap-4 group p-4 rounded-2xl bg-stone-800/50 hover:bg-stone-800 border border-stone-700/50 hover:border-nobel-gold transition-all duration-300">
                                 <div className="w-14 h-14 rounded-full bg-stone-900 border border-stone-700 md:border-none flex items-center justify-center text-nobel-gold group-hover:scale-110 transition-transform duration-300 shadow-inner">
                                     <Mail size={22} />
@@ -823,24 +825,26 @@ const App: React.FC = () => {
                                 </div>
                             </a>
 
-                            <div className="flex gap-4 mt-4">
-                                {data.contact.scholar && data.contact.scholar !== '#' && (
-                                    <a href={data.contact.scholar} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="Google Scholar">
-                                        <GraduationCap size={20} className="group-hover:scale-110 transition-transform" />
-                                    </a>
-                                )}
+                            {(data.contact.scholar && data.contact.scholar !== '#') || (data.contact.researchgate && data.contact.researchgate !== '#') ? (
+                                <div className="flex gap-4 mt-4">
+                                    {data.contact.scholar && data.contact.scholar !== '#' && (
+                                        <a href={data.contact.scholar} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="Google Scholar">
+                                            <GraduationCap size={20} className="group-hover:scale-110 transition-transform" />
+                                        </a>
+                                    )}
 
-                                {data.contact.researchgate && data.contact.researchgate !== '#' && (
-                                    <a href={data.contact.researchgate} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="ResearchGate">
-                                        <Library size={20} className="group-hover:scale-110 transition-transform" />
-                                    </a>
-                                )}
-                            </div>
+                                    {data.contact.researchgate && data.contact.researchgate !== '#' && (
+                                        <a href={data.contact.researchgate} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="ResearchGate">
+                                            <Library size={20} className="group-hover:scale-110 transition-transform" />
+                                        </a>
+                                    )}
+                                </div>
+                            ) : null}
                         </div>
                      </div>
                      
-                     <div className="bg-stone-800/30 p-8 rounded-3xl border border-stone-700/50">
-                        <form onSubmit={handleContactSubmit} className="flex flex-col gap-5">
+                     <div className="bg-stone-800/30 p-8 rounded-3xl border border-stone-700/50 flex flex-col h-full">
+                        <form onSubmit={handleContactSubmit} className="flex flex-col gap-5 flex-grow">
                             <h3 className="font-serif text-2xl mb-2 text-white">{lang === 'tr' ? 'Bana Mesaj Gönder' : 'Send me a message'}</h3>
                             
                             <div className="flex flex-col gap-2">
@@ -885,7 +889,7 @@ const App: React.FC = () => {
                             <button 
                                 type="submit" 
                                 disabled={formStatus === 'sending'}
-                                className="mt-4 px-6 py-4 bg-nobel-gold hover:bg-[#95B933] disabled:opacity-70 disabled:hover:bg-nobel-gold text-stone-900 font-bold rounded-xl transition-colors flex items-center justify-center gap-3 w-full"
+                                className="mt-auto px-6 py-4 bg-nobel-gold hover:bg-[#95B933] disabled:opacity-70 disabled:hover:bg-nobel-gold text-stone-900 font-bold rounded-xl transition-colors flex items-center justify-center gap-3 w-full"
                             >
                                 {formStatus === 'sending' ? (
                                     <>
