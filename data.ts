@@ -46,7 +46,7 @@ export const data = {
   about: {
     label: { tr: "HAKKIMDA", en: "ABOUT ME" },
     title: { tr: "Klinik ve Akademi", en: "Clinical & Academia" },
-    cvUrl: "/cv.pdf", // Dummy URL
+    cvUrl: "/cv.pdf",
     cvButton: { tr: "Özgeçmişi İndir (CV)", en: "Download CV" },
     p1: {
       tr: "Yıllarca yenidoğan yoğun bakım ve pediatri servislerinde edindiğim klinik tecrübemi, şimdi akademik alanda gelecek nesil sağlık çalışanlarına aktarıyorum. Hemşirelik eğitiminde yenilikçi yaklaşımlar ve kanıta dayalı uygulamalar üzerine odaklanmaktayım.",
