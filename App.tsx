@@ -6,15 +6,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HeroScene } from './components/QuantumScene';
-import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked, Home, ZoomIn, ZoomOut, Link } from 'lucide-react';
+import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked, Home, ZoomIn, ZoomOut, Link, Send } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Document, Page, pdfjs } from 'react-pdf';
 import Markdown from 'react-markdown';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
+import emailjs from '@emailjs/browser';
 import { data, Language } from './data';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 import { BrowserRouter as Router, useNavigate, useLocation } from 'react-router-dom';
 
@@ -63,7 +59,7 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number, s
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-const PublicationCard = ({ id, title, type, citation, onClick, lang }: { id: string, title: string, type: string, citation?: string, onClick?: () => void, lang: Language }) => {
+const PublicationCard = ({ id, title, type, authors, journal, metrics, date, citation, externalLink, pdfLink, onClick, lang }: { id: string, title: string, type: string, authors?: string, journal?: string, metrics?: string, date?: string, citation?: string, externalLink?: string, pdfLink?: string, onClick?: () => void, lang: Language }) => {
   const [copied, setCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   
@@ -78,30 +74,65 @@ const PublicationCard = ({ id, title, type, citation, onClick, lang }: { id: str
 
   const handleCopyLink = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const url = new URL(window.location.href);
-    url.hash = id;
-    navigator.clipboard.writeText(url.toString());
+    if (externalLink) {
+        navigator.clipboard.writeText(externalLink);
+    } else {
+        const url = new URL(window.location.href);
+        url.hash = id;
+        navigator.clipboard.writeText(url.toString());
+    }
     setLinkCopied(true);
     setTimeout(() => setLinkCopied(false), 2000);
   };
 
   return (
       <div id={id} onClick={onClick} className="p-6 bg-[#F9F8F4] dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg border-l-4 border-l-nobel-gold group hover:bg-white dark:hover:bg-stone-700 transition-colors duration-300 cursor-pointer flex flex-col scroll-mt-24">
-          <p className="font-serif italic text-lg lg:text-xl text-stone-800 dark:text-stone-200 mb-4 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-xs font-bold text-stone-500 dark:text-stone-400 tracking-wider uppercase bg-stone-200 dark:bg-stone-700 px-2 py-1 rounded inline-block">{type}</span>
+            {date && <span className="text-xs font-medium text-stone-500 dark:text-stone-400">{date}</span>}
+          </div>
+          <p className="font-serif italic text-lg lg:text-xl text-stone-800 dark:text-stone-200 mb-2 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
               "{title}"
           </p>
-          <div className="flex flex-wrap items-center mt-auto w-full gap-4">
-              <span className="text-xs font-bold text-stone-500 dark:text-stone-400 tracking-wider uppercase mr-auto">— {type}</span>
-              
-              <button onClick={handleCopyLink} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'Bağlantıyı Kopyala' : 'Copy Link'}>
-                <Link size={14} />
-                {linkCopied ? (lang === 'tr' ? 'Kopyalandı!' : 'Copied!') : (lang === 'tr' ? 'Bağlantı' : 'Link')}
-              </button>
+          
+          {(authors || journal) && (
+             <div className="mb-3 text-sm text-stone-600 dark:text-stone-400">
+                {authors && <div className="font-medium"><span className="text-stone-500 dark:text-stone-500">{lang === 'tr' ? 'Yazarlar: ' : 'Authors: '}</span>{authors}</div>}
+                {journal && <div><span className="text-stone-500 dark:text-stone-500">{lang === 'tr' ? 'Dergi: ' : 'Journal: '}</span>{journal}</div>}
+             </div>
+          )}
+
+          {metrics && (
+             <div className="mb-4 text-xs font-mono text-stone-500 dark:text-stone-400 tracking-tight">
+                {metrics}
+             </div>
+          )}
+
+          <div className="flex flex-wrap items-center mt-auto w-full gap-4 pt-2">
+              <div className="flex items-center gap-2 mr-auto">
+                  {externalLink ? (
+                      <a href={externalLink} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'Bağlantı' : 'Link'}>
+                        <Link size={14} />
+                        {lang === 'tr' ? 'Bağlantı' : 'Link'}
+                      </a>
+                  ) : (
+                      <button onClick={handleCopyLink} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'Bağlantıyı Kopyala' : 'Copy Link'}>
+                        <Link size={14} />
+                        {linkCopied ? (lang === 'tr' ? 'Kopyalandı!' : 'Copied!') : (lang === 'tr' ? 'Bağlantı' : 'Link')}
+                      </button>
+                  )}
+                  {pdfLink && (
+                      <a href={pdfLink} download target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'PDF İndir' : 'Download PDF'}>
+                        <Download size={14} />
+                        {lang === 'tr' ? 'PDF İndir' : 'Download PDF'}
+                      </a>
+                  )}
+              </div>
 
               {citation && (
-                 <button onClick={handleCopy} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'Alıntıyı Kopyala' : 'Copy Citation'}>
+                 <button onClick={handleCopy} className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-700 hover:bg-stone-300 dark:hover:bg-stone-600 text-stone-700 dark:text-stone-300 rounded text-xs transition-colors" title={lang === 'tr' ? 'Makaleyi Alıntıla' : 'Cite this article'}>
                     <Copy size={14} />
-                    {copied ? (lang === 'tr' ? 'Kopyalandı!' : 'Copied!') : (lang === 'tr' ? 'Alıntıyı Kopyala' : 'Copy Citation')}
+                    {copied ? (lang === 'tr' ? 'Kopyalandı!' : 'Copied!') : (lang === 'tr' ? 'Makaleyi Alıntıla' : 'Cite this article')}
                  </button>
               )}
           </div>
@@ -116,12 +147,39 @@ const App: React.FC = () => {
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPdf, setSelectedPdf] = useState<{title: string, type: string, url: string} | null>(null);
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pdfZoom, setPdfZoom] = useState(1);
+  const [selectedPdf, setSelectedPdf] = useState<{title: string, type: string, url: string, abstract?: string} | null>(null);
   const [darkMode, setDarkMode] = useState(false);
   
   const [galleryIndex, setGalleryIndex] = useState(0);
+
+  const [formState, setFormState] = useState({ name: '', email: '', message: '' });
+  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus('sending');
+
+    // These should be configured in real-world via env vars
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'default_service';
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'default_template';
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'default_public_key';
+
+    emailjs.send(serviceId, templateId, {
+      from_name: formState.name,
+      from_email: formState.email,
+      message: formState.message,
+    }, publicKey)
+    .then(() => {
+      setFormStatus('success');
+      setFormState({ name: '', email: '', message: '' });
+      setTimeout(() => setFormStatus('idle'), 5000);
+    })
+    .catch((error) => {
+      console.error('FAILED...', error);
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 5000);
+    });
+  };
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -434,14 +492,14 @@ const App: React.FC = () => {
 
         {/* LinkedIn Feed Section */}
         <section className="py-24 bg-white dark:bg-stone-950 border-b border-stone-200 dark:border-stone-800 overflow-hidden">
-          <div className="container mx-auto px-6">
+          <div className="w-full max-w-[1440px] mx-auto px-6">
              <div className="mb-12 text-center flex flex-col items-center">
                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-100 dark:bg-stone-900 text-stone-600 dark:text-stone-400 text-xs font-bold tracking-widest uppercase rounded-full mb-6 border border-stone-200 dark:border-stone-800 shadow-sm">
                      {lang === 'tr' ? 'Etkileşim' : 'Engagement'}
                  </div>
                  <h2 className="font-serif text-4xl text-stone-900 dark:text-white">LinkedIn Feed</h2>
              </div>
-             <div className="w-full mx-auto md:p-8 rounded-3xl overflow-hidden shadow-lg border border-stone-200 dark:border-stone-800 bg-white">
+             <div className="w-full mx-auto rounded-3xl overflow-hidden shadow-lg border border-stone-200 dark:border-stone-800 bg-white">
                 <div className="elfsight-app-31c4d3c3-6a14-4e86-81e5-a69a1ca957e3" data-elfsight-app-lazy></div>
              </div>
           </div>
@@ -549,7 +607,7 @@ const App: React.FC = () => {
                 <div className="max-w-4xl mx-auto grid grid-cols-1 gap-6">
                     {filteredPublications.length === 0 && <p className="text-stone-500 text-center italic">{lang === 'tr' ? 'Sonuç bulunamadı...' : 'No results found...'}</p>}
                     {filteredPublications.map((pub, idx) => (
-                        <PublicationCard key={idx} id={`publication-${idx}`} lang={lang} title={pub.title[lang]} type={pub.type[lang]} citation={pub.citation} onClick={() => pub.pdfUrl ? setSelectedPdf({ title: pub.title[lang], type: pub.type[lang], url: pub.pdfUrl }) : null} />
+                        <PublicationCard key={idx} id={`publication-${idx}`} lang={lang} title={pub.title[lang]} type={pub.type[lang]} authors={pub.authors} journal={pub.journal} metrics={pub.metrics} date={pub.date ? pub.date[lang] : undefined} citation={pub.citation} externalLink={pub.linkUrl} pdfLink={pub.pdfUrl} onClick={() => (pub.pdfUrl || pub.abstract) ? setSelectedPdf({ title: pub.title[lang], type: pub.type[lang], url: pub.pdfUrl || "", abstract: pub.abstract ? pub.abstract[lang] : undefined }) : undefined} />
                     ))}
                 </div>
             </div>
@@ -761,45 +819,124 @@ const App: React.FC = () => {
                   <div className="inline-block mb-3 text-xs font-bold tracking-widest text-nobel-gold uppercase">{data.contact.label[lang]}</div>
                   <h2 className="font-serif text-4xl md:text-5xl mb-12 text-white">{data.contact.title[lang]}</h2>
                   
-                  <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
-                      <a href={`mailto:${data.contact.email}`} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open(`mailto:${data.contact.email}`, '_blank'); }} className="flex flex-col items-center gap-4 group">
-                          <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-nobel-gold group-hover:scale-110 group-hover:bg-nobel-gold group-hover:text-stone-900 transition-all duration-300">
-                              <Mail size={24} />
-                          </div>
-                          <span className="text-stone-400 group-hover:text-white transition-colors">{data.contact.email}</span>
-                      </a>
-                      
-                      <a href={data.contact.linkedin} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-4 group">
-                          <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-nobel-gold group-hover:scale-110 group-hover:bg-nobel-gold group-hover:text-stone-900 transition-all duration-300">
-                              <Linkedin size={24} />
-                          </div>
-                          <span className="text-stone-400 group-hover:text-white transition-colors">LinkedIn Profile</span>
-                      </a>
+                  <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 text-left">
+                     <div>
+                        <h3 className="font-serif text-3xl mb-6 text-white">{lang === 'tr' ? 'İletişime Geçin' : 'Get in Touch'}</h3>
+                        <p className="text-stone-400 mb-10 leading-relaxed text-lg">
+                           {lang === 'tr' ? 'Akademik iş birlikleri, sorularınız veya projeler hakkında konuşmak için bana ulaşabilirsiniz.' : 'Feel free to reach out for academic collaborations, questions, or to discuss projects.'}
+                        </p>
+                        
+                        <div className="flex flex-col gap-6">
+                            <a href={`mailto:${data.contact.email}`} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open(`mailto:${data.contact.email}`, '_blank'); }} className="flex items-center gap-4 group p-4 rounded-2xl bg-stone-800/50 hover:bg-stone-800 border border-stone-700/50 hover:border-nobel-gold transition-all duration-300">
+                                <div className="w-14 h-14 rounded-full bg-stone-900 border border-stone-700 md:border-none flex items-center justify-center text-nobel-gold group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                                    <Mail size={22} />
+                                </div>
+                                <div>
+                                    <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Email</div>
+                                    <span className="text-stone-200 group-hover:text-white transition-colors">{data.contact.email}</span>
+                                </div>
+                            </a>
+                            
+                            <a href={data.contact.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-4 rounded-2xl bg-stone-800/50 hover:bg-stone-800 border border-stone-700/50 hover:border-nobel-gold transition-all duration-300">
+                                <div className="w-14 h-14 rounded-full bg-stone-900 border border-stone-700 md:border-none flex items-center justify-center text-nobel-gold group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                                    <Linkedin size={22} />
+                                </div>
+                                <div>
+                                    <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">LinkedIn</div>
+                                    <span className="text-stone-200 group-hover:text-white transition-colors">{lang === 'tr' ? 'Profili Görüntüle' : 'View Profile'}</span>
+                                </div>
+                            </a>
 
-                      <a href={data.contact.orcid} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-4 group">
-                          <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-nobel-gold group-hover:scale-110 group-hover:bg-nobel-gold group-hover:text-stone-900 transition-all duration-300">
-                              <BookOpen size={24} />
-                          </div>
-                          <span className="text-stone-400 group-hover:text-white transition-colors">ORCID Portfolio</span>
-                      </a>
-                      
-                      {data.contact.scholar && data.contact.scholar !== '#' && (
-                          <a href={data.contact.scholar} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-4 group">
-                              <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-nobel-gold group-hover:scale-110 group-hover:bg-nobel-gold group-hover:text-stone-900 transition-all duration-300">
-                                  <GraduationCap size={24} />
-                              </div>
-                              <span className="text-stone-400 group-hover:text-white transition-colors">Google Scholar</span>
-                          </a>
-                      )}
+                            <div className="flex gap-4 mt-4">
+                                <a href={data.contact.orcid} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="ORCID">
+                                    <BookOpen size={20} className="group-hover:scale-110 transition-transform" />
+                                </a>
+                                
+                                {data.contact.scholar && data.contact.scholar !== '#' && (
+                                    <a href={data.contact.scholar} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="Google Scholar">
+                                        <GraduationCap size={20} className="group-hover:scale-110 transition-transform" />
+                                    </a>
+                                )}
 
-                      {data.contact.researchgate && data.contact.researchgate !== '#' && (
-                          <a href={data.contact.researchgate} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-4 group">
-                              <div className="w-16 h-16 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-nobel-gold group-hover:scale-110 group-hover:bg-nobel-gold group-hover:text-stone-900 transition-all duration-300">
-                                  <Library size={24} />
-                              </div>
-                              <span className="text-stone-400 group-hover:text-white transition-colors">ResearchGate</span>
-                          </a>
-                      )}
+                                {data.contact.researchgate && data.contact.researchgate !== '#' && (
+                                    <a href={data.contact.researchgate} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="ResearchGate">
+                                        <Library size={20} className="group-hover:scale-110 transition-transform" />
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                     </div>
+                     
+                     <div className="bg-stone-800/30 p-8 rounded-3xl border border-stone-700/50">
+                        <form onSubmit={handleContactSubmit} className="flex flex-col gap-5">
+                            <h3 className="font-serif text-2xl mb-2 text-white">{lang === 'tr' ? 'Bana Mesaj Gönder' : 'Send me a message'}</h3>
+                            
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="name" className="text-xs font-bold text-stone-400 uppercase tracking-widest">{lang === 'tr' ? 'İsim' : 'Name'}</label>
+                                <input 
+                                    type="text" 
+                                    id="name" 
+                                    required
+                                    value={formState.name}
+                                    onChange={(e) => setFormState({...formState, name: e.target.value})}
+                                    className="px-4 py-3 bg-stone-900 border border-stone-700 rounded-xl focus:outline-none focus:border-nobel-gold text-white transition-colors"
+                                    placeholder={lang === 'tr' ? 'Adınız Soyadınız' : 'John Doe'}
+                                />
+                            </div>
+                            
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="email" className="text-xs font-bold text-stone-400 uppercase tracking-widest">Email</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    required
+                                    value={formState.email}
+                                    onChange={(e) => setFormState({...formState, email: e.target.value})}
+                                    className="px-4 py-3 bg-stone-900 border border-stone-700 rounded-xl focus:outline-none focus:border-nobel-gold text-white transition-colors"
+                                    placeholder="john@example.com"
+                                />
+                            </div>
+                            
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="message" className="text-xs font-bold text-stone-400 uppercase tracking-widest">{lang === 'tr' ? 'Mesaj' : 'Message'}</label>
+                                <textarea 
+                                    id="message" 
+                                    required
+                                    rows={4}
+                                    value={formState.message}
+                                    onChange={(e) => setFormState({...formState, message: e.target.value})}
+                                    className="px-4 py-3 bg-stone-900 border border-stone-700 rounded-xl focus:outline-none focus:border-nobel-gold text-white transition-colors resize-none"
+                                    placeholder={lang === 'tr' ? 'Mesajınız...' : 'Your message...'}
+                                ></textarea>
+                            </div>
+                            
+                            <button 
+                                type="submit" 
+                                disabled={formStatus === 'sending'}
+                                className="mt-4 px-6 py-4 bg-nobel-gold hover:bg-[#95B933] disabled:opacity-70 disabled:hover:bg-nobel-gold text-stone-900 font-bold rounded-xl transition-colors flex items-center justify-center gap-3 w-full"
+                            >
+                                {formStatus === 'sending' ? (
+                                    <>
+                                        <Loader2 size={20} className="animate-spin" />
+                                        {lang === 'tr' ? 'Gönderiliyor...' : 'Sending...'}
+                                    </>
+                                ) : formStatus === 'success' ? (
+                                    <>
+                                        {lang === 'tr' ? 'Mesaj Gönderildi!' : 'Message Sent!'}
+                                    </>
+                                ) : formStatus === 'error' ? (
+                                    <>
+                                        {lang === 'tr' ? 'Bir Hata Oluştu' : 'An Error Occurred'}
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>{lang === 'tr' ? 'Gönder' : 'Send Message'}</span>
+                                        <Send size={18} />
+                                    </>
+                                )}
+                            </button>
+                        </form>
+                     </div>
                   </div>
              </div>
         </section>
@@ -843,62 +980,56 @@ const App: React.FC = () => {
                           </div>
                           
                           <div className="flex items-center gap-2 shrink-0">
-                              <button onClick={() => setPdfZoom(prev => Math.max(0.5, prev - 0.25))} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors" title={lang === 'tr' ? 'Uzaklaştır' : 'Zoom Out'}>
-                                  <ZoomOut size={20}/>
-                              </button>
-                              <button onClick={() => setPdfZoom(prev => Math.min(3, prev + 0.25))} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors" title={lang === 'tr' ? 'Yakınlaştır' : 'Zoom In'}>
-                                  <ZoomIn size={20}/>
-                              </button>
-                              <div className="w-px h-6 bg-stone-300 dark:bg-stone-700 mx-1"></div>
-                              <a href={selectedPdf.url} download target="_blank" rel="noopener noreferrer" className="p-2 text-stone-400 hover:text-nobel-gold hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors" title={lang === 'tr' ? 'İndir' : 'Download'}>
-                                  <Download size={20}/>
-                              </a>
-                              <button onClick={() => { setSelectedPdf(null); setNumPages(null); setPdfZoom(1); }} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors">
+                              {selectedPdf.url && (
+                                  <a href={selectedPdf.url} download target="_blank" rel="noopener noreferrer" className="p-2 text-stone-400 hover:text-nobel-gold hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors" title={lang === 'tr' ? 'İndir' : 'Download'}>
+                                      <Download size={20}/>
+                                  </a>
+                              )}
+                              <button onClick={() => setSelectedPdf(null)} className="p-2 text-stone-400 hover:text-stone-900 dark:hover:text-white hover:bg-stone-200 dark:hover:bg-stone-800 rounded-full transition-colors">
                                   <X size={24}/>
                               </button>
                           </div>
                      </div>
-                     <div className="flex-1 bg-stone-100 dark:bg-stone-800 overflow-y-auto w-full relative">
-                           <Document 
-                              file={selectedPdf.url} 
-                              className="flex flex-col items-center py-8 gap-4 min-h-full"
-                              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-                              loading={
-                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-100 dark:bg-stone-800 w-full h-full z-10">
-                                  <div className="relative w-32 h-32 flex items-center justify-center">
-                                    <div className="absolute inset-0 rounded-full border-4 border-stone-200 dark:border-stone-700"></div>
-                                    <div className="absolute inset-0 rounded-full border-4 border-nobel-gold border-t-transparent animate-spin"></div>
-                                    <Loader2 className="absolute text-nobel-gold animate-pulse" size={32} />
-                                  </div>
-                                  <p className="mt-6 text-stone-600 dark:text-stone-400 font-medium tracking-wide animate-pulse">{lang === 'tr' ? 'PDF Yükleniyor...' : 'Loading PDF...'}</p>
-                                </div>
-                              }
-                              error={
-                                <div className="flex flex-col items-center justify-center w-full h-full text-stone-500 px-6 text-center mt-20">
-                                  <div className="w-20 h-20 bg-stone-200 dark:bg-stone-700 rounded-full flex items-center justify-center mb-6">
-                                    <FileIcon size={32} className="text-stone-400 dark:text-stone-500" />
-                                  </div>
-                                  <h3 className="text-xl font-serif text-stone-800 dark:text-stone-200 mb-2">{lang === 'tr' ? 'PDF yüklenemedi' : 'Failed to load PDF'}</h3>
-                                  <p className="mb-6 max-w-md">{lang === 'tr' ? 'Dosya bulunamadı veya biçim desteklenmiyor. Aşağıdaki bağlantıdan doğrudan indirmeyi deneyebilirsiniz.' : 'The file could not be found or the format is not supported. You can try downloading it directly from the link below.'}</p>
-                                  <a href={selectedPdf.url} download target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-nobel-gold hover:bg-stone-900 dark:hover:bg-white text-white dark:text-stone-900 rounded-full transition-colors flex items-center gap-2 font-medium">
-                                      <Download size={18} />
-                                      {lang === 'tr' ? 'Doğrudan İndir' : 'Direct Download'}
-                                  </a>
-                                </div>
-                              }
-                           >
-                              {Array.from(new Array(numPages || 0), (el, index) => (
-                                <Page 
-                                  key={`page_${index + 1}`}
-                                  pageNumber={index + 1} 
-                                  width={Math.min(window.innerWidth * 0.9, 800) * pdfZoom} 
-                                  className="shadow-lg mb-4 transition-all duration-200" 
-                                  renderTextLayer={false} 
-                                  renderAnnotationLayer={false} 
-                                />
-                              ))}
-                           </Document>
-                     </div>
+                     <div className="flex-1 flex overflow-hidden w-full relative">
+                         {selectedPdf.abstract ? (
+                            <div className="w-full h-full overflow-y-auto px-6 py-12 md:py-20 flex flex-col items-center bg-stone-50 dark:bg-stone-950">
+                               <div className="w-16 h-1 bg-nobel-gold mb-8 rounded-full"></div>
+                               <h4 className="font-serif text-3xl md:text-4xl font-medium text-stone-900 dark:text-stone-100 mb-8 text-center">{lang === 'tr' ? 'Tez/Makale Özeti' : 'Research Abstract'}</h4>
+                               <div className="w-full max-w-4xl text-center flex flex-col gap-6">
+                                   {selectedPdf.abstract.split(/(?:\n\n|\n(?=(?:Konu|Dizin|Subject|Index|Anahtar kelimeler|Keywords|Objective|Study design|Results|Conclusion):))/i).filter(p => p.trim() !== "").map((paragraph, index) => {
+                                      const match = paragraph.match(/^(Konu|Dizin|Subject|Index|Anahtar kelimeler|Keywords|Objective|Study design|Results|Conclusion):\s*(.*)/is);
+                                      if (match) {
+                                          return (
+                                              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} key={index} className="bg-white dark:bg-stone-900 p-6 md:p-8 rounded-2xl shadow-sm border border-stone-100 dark:border-stone-800/50 hover:shadow-md transition-shadow relative overflow-hidden group">
+                                                  <div className="absolute top-0 left-0 w-2 h-full bg-nobel-gold/20 group-hover:bg-nobel-gold transition-colors"></div>
+                                                  <h5 className="text-nobel-gold font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-sm md:text-base mb-3 text-left pl-2">
+                                                    {match[1].trim()}
+                                                  </h5>
+                                                  <p className="text-stone-700 dark:text-stone-300 leading-loose text-base md:text-lg text-left pl-2">
+                                                    {match[2].trim()}
+                                                  </p>
+                                              </motion.div>
+                                          );
+                                      }
+                                      return (
+                                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} key={index} className="bg-white dark:bg-stone-900 p-6 md:p-8 rounded-2xl shadow-sm border border-stone-100 dark:border-stone-800/50 hover:shadow-md transition-shadow">
+                                              <p className="text-stone-700 dark:text-stone-300 leading-loose text-base md:text-lg text-justify md:text-left">
+                                                {paragraph.trim()}
+                                              </p>
+                                          </motion.div>
+                                      );
+                                   })}
+                               </div>
+                           </div>
+                         ) : (
+                           <div className="flex flex-col items-center justify-center w-full h-full bg-stone-50 dark:bg-stone-900 text-stone-500 px-6 text-center">
+                               <div className="w-20 h-20 bg-stone-200 dark:bg-stone-700 rounded-full flex items-center justify-center mb-6">
+                                 <FileIcon size={32} className="text-stone-400 dark:text-stone-500" />
+                               </div>
+                               <h3 className="text-xl font-serif text-stone-800 dark:text-stone-200 mb-2">{lang === 'tr' ? 'Özet Bulunamadı' : 'No Abstract Found'}</h3>
+                           </div>
+                         )}
+                      </div>
                   </motion.div>
               </motion.div>
           )}
