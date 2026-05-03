@@ -3,8 +3,8 @@ export type Language = 'tr' | 'en';
 export const data = {
   header: {
     title: {
-      tr: "Ayşenur Akkaya Gül",
-      en: "Ayşenur Akkaya Gül"
+      tr: "Dr. Öğr. Üyesi Ayşenur Akkaya Gül",
+      en: "Assist. Prof. Dr. Ayşenur Akkaya Gül"
     },
     subtitle: {
       tr: "Akademisyen & Ar-Ge",
@@ -27,8 +27,8 @@ export const data = {
       en: "Fenerbahçe Üniversitesi • Instructor"
     },
     title: {
-      tr: "Ayşenur Akkaya Gül",
-      en: "Ayşenur Akkaya Gül"
+      tr: "Dr. Öğr. Üyesi Ayşenur Akkaya Gül",
+      en: "Assist. Prof. Dr. Ayşenur Akkaya Gül"
     },
     subtitle: {
       tr: "Çocuk Sağlığı ve Hastalıkları Hemşireliği",
@@ -285,43 +285,46 @@ export const data = {
     title: { tr: "Deneyim & Eğitim", en: "Experience & Education" },
     jobs: [
       {
-        role: { tr: "Öğretim Görevlisi - İlk ve Acil Yardım", en: "Lecturer - First and Emergency Aid" },
+        role: { tr: "Öğretim Görevlisi (İlk ve Acil Yardım Programı)", en: "Lecturer (First and Emergency Aid Program)" },
         company: "Fenerbahçe Üniversitesi",
-        date: { tr: "Şubat 2022 - Günümüz", en: "February 2022 - Present" },
+        url: "https://www.fbu.edu.tr/",
+        date: { tr: "Şubat 2022 - Günümüz", en: "2022-02-14 - Present" },
         description: { 
-          tr: "Verilen Dersler: Tıbbi İlk Yardım, Travma I, Travma II, Acil Hasta Bakımı I, Acil Hasta Bakımı II, Acil Hasta Bakımı III, Klinik Uygulama I, Klinik Uygulama 2, Acil Sağlık Hizmetleri, Staj, Temel Mesleki Beceriler, Ebelik – Klinik Uygulama, Çevre ve Sosyal Sorumluluk, Sağlık Okuryazarlığı, Ambulans Eğitimi I.", 
-          en: "Courses Taught: Medical First Aid, Trauma I, Trauma II, Emergency Patient Care I, Emergency Patient Care II, Emergency Patient Care III, Clinical Practice I, Clinical Practice 2, Emergency Health Services, Internship, Basic Vocational Skills, Midwifery – Clinical Practice, Environmental and Social Responsibility, Health Literacy, Ambulance Training I." 
+          tr: "Istanbul, Atasehir, TR. Verilen Dersler: Tıbbi İlk Yardım, Travma I, Travma II, Acil Hasta Bakımı I, Acil Hasta Bakımı II, Acil Hasta Bakımı III, Klinik Uygulama I, Klinik Uygulama 2, Acil Sağlık Hizmetleri, Staj, Temel Mesleki Beceriler, Ebelik – Klinik Uygulama, Çevre ve Sosyal Sorumluluk, Sağlık Okuryazarlığı, Ambulans Eğitimi I.", 
+          en: "Istanbul, Atasehir, TR. Courses Taught: Medical First Aid, Trauma I, Trauma II, Emergency Patient Care I, Emergency Patient Care II, Emergency Patient Care III, Clinical Practice I, Clinical Practice 2, Emergency Health Services, Internship, Basic Vocational Skills, Midwifery – Clinical Practice, Environmental and Social Responsibility, Health Literacy, Ambulance Training I." 
         },
         skills: { tr: ["Hemşirelik Eğitimi", "Akademik Danışmanlık", "İlk Yardım"], en: ["Nursing Education", "Academic Mentoring", "First Aid"] }
       },
       {
-        role: { tr: "Öğretim Görevlisi (Erasmus+ Hareketliliği)", en: "Lecturer (Erasmus+ Mobility)" },
-        company: "University of Granada",
-        date: { tr: "Mart 2023", en: "March 2023" },
-        skills: { tr: ["Uluslararası Deneyim", "Hemşirelik Eğitimi"], en: ["International Experience", "Nursing Education"] }
-      },
-      {
-        role: { tr: "Hemşire (RN) - Yenidoğan Yoğun Bakım", en: "RN, Neonatal Intensive Care Unit" },
-        company: "İstanbul Tuzla Devlet Hastanesi",
-        date: { tr: "Ekim 2017 - Şubat 2022", en: "October 2017 - February 2022" },
+        role: { tr: "Hemşire (Yenidoğan Yoğun Bakım)", en: "Nursing (Neonatal Intensive Care)" },
+        company: "TC Sağlık Bakanlığı Tuzla Devlet Hastanesi",
+        url: "https://tuzladh.saglik.gov.tr/",
+        date: { tr: "Ekim 2017 - Şubat 2022", en: "2017-10-21 - 2022-02-14" },
+        description: { tr: "Istanbul, Tuzla, TR", en: "Istanbul, Tuzla, TR" },
         skills: { tr: ["Yenidoğan Yoğun Bakım", "Klinik Deneyim", "Ağrı Yönetimi"], en: ["Neonatal ICU", "Clinical Experience", "Pain Management"] }
       },
-       {
-        role: { tr: "Hemşire (RN) - Yenidoğan Yoğun Bakım", en: "RN, Neonatal Intensive Care Unit" },
-        company: "Aydın Adnan Menderes Üniversitesi",
-        date: { tr: "Mart 2017 - Haziran 2017", en: "March 2017 - June 2017" },
+      {
+        role: { tr: "Hemşire (Yenidoğan Yoğun Bakım)", en: "Nursing (Neonatal Intensive Care)" },
+        company: "Aydın Adnan Menderes Üniversitesi Uygulama ve Araştırma Hastanesi",
+        url: "https://hastane.adu.edu.tr/",
+        date: { tr: "Mart 2017 - Ekim 2017", en: "2017-03-21 - 2017-10-06" },
+        description: { tr: "Aydin, Aydın, TR", en: "Aydin, Aydın, TR" },
         skills: { tr: ["Yenidoğan Bakımı", "Hasta Takibi"], en: ["Neonatal Care", "Patient Monitoring"] }
       },
       {
-        role: { tr: "Hemşire (RN) - Pediatri Servisi", en: "RN, Pediatric Service" },
-        company: "Özel Başkent Hastanesi",
-        date: { tr: "Ağustos 2016 - Şubat 2017", en: "August 2016 - February 2017" },
+        role: { tr: "Hemşire (Pediatri Servisi)", en: "Nursing (Pediatric Service)" },
+        company: "Başkent University Hospital",
+        url: "https://ankara.baskenthastaneleri.com/tr/",
+        date: { tr: "Ağustos 2016 - Şubat 2017", en: "2016-08-02 - 2017-02-20" },
+        description: { tr: "Ankara, TR", en: "Ankara, TR" },
         skills: { tr: ["Pediatri", "Çocuk Sağlığı"], en: ["Pediatrics", "Child Health"] }
       },
       {
-        role: { tr: "Stajyer Hemşire (Acil Servis, Yenidoğan Yoğun Bakım)", en: "Intern Nursing (Emergency service, neonatal ICU)" },
+        role: { tr: "Stajyer Hemşire (Acil servis, Yenidoğan yoğun bakım)", en: "Intern Nursing (Emergency service, neonatal intensive care)" },
         company: "Hospital Universitario de Ceuta",
-        date: { tr: "Eylül 2014 - Şubat 2015", en: "September 2014 - February 2015" },
+        url: "http://www.areasanitariaceuta.es/atencion-especializada/hospital-universitario-de-ceuta/",
+        date: { tr: "Eylül 2014 - Şubat 2015", en: "2014-09-17 - 2015-02-02" },
+        description: { tr: "Ceuta, Ceuta, ES", en: "Ceuta, Ceuta, ES" },
         skills: { tr: ["Acil Servis", "Yenidoğan Yoğun Bakım"], en: ["Emergency Service", "Neonatal ICU"] }
       }
     ],
@@ -329,7 +332,7 @@ export const data = {
       {
         degree: { tr: "Doktora (PhD), Çocuk Sağlığı ve Hastalıkları Hemşireliği", en: "Doctorate (PhD), Child Health and Diseases Nursing" },
         school: "Uludağ Üniversitesi",
-        date: "2020 - Present"
+        date: "2020 - 2024"
       },
       {
         degree: { tr: "Yüksek Lisans (MSc), Çocuk Sağlığı ve Hastalıkları Hemşireliği", en: "Master(MSc), Child Health and Diseases Nursing" },
@@ -382,7 +385,8 @@ export const data = {
   contact: {
     label: { tr: "İLETİŞİM", en: "CONTACT" },
     title: { tr: "Bize Ulaşın", en: "Get In Touch" },
-    email: "aysenurakkaya006@gmail.com",
+    email: "aysenur.gul@fbu.edu.tr",
+    personalEmail: "aysenurakkaya006@gmail.com",
     linkedin: "https://www.linkedin.com/in/aysenurakkayagul",
     orcid: "https://orcid.org/0000-0001-9019-8740",
     scholar: "#", // Google Scholar link can be added here

@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { HeroScene } from './components/QuantumScene';
-import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked, Home, ZoomIn, ZoomOut, Link, Send } from 'lucide-react';
+import { ArrowDown, Menu, X, BookOpen, GraduationCap, Award, Briefcase, Mail, Linkedin, FileText, Globe, Search, Library, FileIcon, Copy, Moon, Sun, ChevronLeft, ChevronRight, Loader2, Download, Medal, Video, School, MonitorPlay, Microscope, Users, BookmarkCheck, LayoutList, BookMarked, Home, ZoomIn, ZoomOut, Link, Send, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import Markdown from 'react-markdown';
 import emailjs from '@emailjs/browser';
@@ -14,12 +14,18 @@ import { data, Language } from './data';
 
 import { BrowserRouter as Router, useNavigate, useLocation } from 'react-router-dom';
 
-const ExperienceCard = ({ role, company, date, delay, description, skills }: { role: string, company: string, date: string, delay: string, description?: string, skills?: string[] }) => {
+const ExperienceCard = ({ role, company, date, delay, description, skills, url }: { role: string, company: string, date: string, delay: string, description?: string, skills?: string[], url?: string }) => {
   return (
     <div className="relative pl-8 border-l-2 border-stone-700 animate-fade-in-up" style={{ animationDelay: delay }}>
         <div className="absolute w-4 h-4 bg-stone-900 border-2 border-nobel-gold rounded-full -left-[9px] top-1"></div>
         <h4 className="text-xl font-medium text-white mb-1">{role}</h4>
-        <p className="text-stone-400 mb-2">{company}</p>
+        {url ? (
+            <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-stone-400 hover:text-nobel-gold transition-colors mb-2">
+                {company} <ExternalLink size={14} />
+            </a>
+        ) : (
+            <p className="text-stone-400 mb-2">{company}</p>
+        )}
         <p className="text-sm font-mono text-stone-500 uppercase mb-3">{date}</p>
         {description && (
             <p className="text-stone-300 text-sm leading-relaxed mb-4">{description}</p>
@@ -370,6 +376,7 @@ const App: React.FC = () => {
         <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(249,248,244,0.92)_0%,rgba(249,248,244,0.6)_50%,rgba(249,248,244,0.3)_100%)] dark:bg-[radial-gradient(circle_at_center,rgba(28,25,23,0.92)_0%,rgba(28,25,23,0.6)_50%,rgba(28,25,23,0.3)_100%)]" />
 
         <div className="relative z-10 container mx-auto px-6 text-center">
+          <img src="https://upload.wikimedia.org/wikipedia/en/e/e1/Fenerbah%C3%A7e_University.png" alt="Fenerbahçe Üniversitesi" className="h-16 md:h-24 mx-auto mb-8 drop-shadow-md z-20 relative opacity-90 hover:opacity-100 transition-opacity" />
           <div className="inline-block mb-4 px-3 py-1 border border-nobel-gold text-nobel-gold text-xs tracking-[0.2em] uppercase font-bold rounded-full backdrop-blur-sm bg-white/30 dark:bg-stone-900/30">
              {data.hero.label[lang]}
           </div>
@@ -545,7 +552,7 @@ const App: React.FC = () => {
                         <div className="space-y-8">
                             {filteredJobs.length === 0 && <p className="text-stone-500 italic text-sm">{lang === 'tr' ? 'Sonuç bulunamadı...' : 'No results found...'}</p>}
                             {filteredJobs.map((job, idx) => (
-                                <ExperienceCard key={idx} role={job.role[lang]} company={job.company} date={job.date[lang]} description={job.description ? job.description[lang] : undefined} skills={job.skills ? job.skills[lang] : undefined} delay={`${idx * 0.1}s`} />
+                                <ExperienceCard key={idx} role={job.role[lang]} company={job.company} date={job.date[lang]} description={job.description ? job.description[lang] : undefined} skills={job.skills ? job.skills[lang] : undefined} url={job.url} delay={`${idx * 0.1}s`} />
                             ))}
                         </div>
                      </div>
@@ -570,32 +577,6 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Mentorship / Theses */}
-                <div className="mt-24 pt-24 border-t border-stone-800">
-                  <div className="mb-12 text-center lg:text-left">
-                       <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-800 text-nobel-gold text-xs font-bold tracking-widest uppercase rounded-full mb-6 border border-stone-700">
-                           {data.theses.label[lang]}
-                       </div>
-                       <h2 className="font-serif text-3xl md:text-4xl text-white flex items-center gap-4 justify-center lg:justify-start">
-                           <Users className="text-stone-600" size={32} />
-                           {data.theses.title[lang]}
-                       </h2>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {data.theses.items.map((thesis, idx) => (
-                          <div key={idx} className="bg-stone-900 p-6 rounded-2xl border border-stone-800 hover:border-stone-600 transition-colors">
-                              <div className="flex justify-between items-start mb-4">
-                                  <h3 className="font-serif text-xl text-white leading-tight pr-4">{thesis.student}</h3>
-                                  <span className="text-xs font-mono px-2 py-1 bg-stone-800 text-nobel-gold rounded">{thesis.year}</span>
-                              </div>
-                              <p className="text-stone-400 text-sm mb-4 leading-relaxed font-medium">"{thesis.title[lang]}"</p>
-                              <div className="inline-flex items-center gap-2 text-xs text-stone-500 font-medium uppercase tracking-wider">
-                                  <BookMarked size={14} /> {thesis.type[lang]}
-                              </div>
-                          </div>
-                      ))}
-                  </div>
-                </div>
             </div>
         </section>
 
@@ -673,34 +654,6 @@ const App: React.FC = () => {
                     </div>
                 </div>
              </div>
-        </section>
-
-        {/* Awards & Honors */}
-        <section id="awards" className="py-24 bg-[#F5F4F0] dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800">
-            <div className="container mx-auto px-6">
-                <div className="max-w-4xl mx-auto text-center mb-16">
-                    <div className="inline-block mb-3 text-xs font-bold tracking-widest text-stone-500 dark:text-stone-400 uppercase">{data.awards.label[lang]}</div>
-                    <h2 className="font-serif text-4xl md:text-5xl mb-6 text-stone-900 dark:text-white">{data.awards.title[lang]}</h2>
-                    <div className="w-16 h-1 bg-nobel-gold mx-auto"></div>
-                </div>
-                
-                <div className="max-w-3xl mx-auto space-y-6">
-                    {data.awards.items.map((award, idx) => (
-                         <div key={idx} className="flex gap-6 items-center p-6 bg-white dark:bg-stone-800 rounded-2xl border border-stone-200 dark:border-stone-700 shadow-sm hover:shadow-md transition-shadow">
-                             <div className="w-16 h-16 shrink-0 bg-nobel-gold/10 dark:bg-nobel-gold/20 rounded-full flex items-center justify-center">
-                                 <Medal className="text-nobel-gold" size={28} strokeWidth={1.5} />
-                             </div>
-                             <div className="flex-1">
-                                 <h3 className="font-serif text-xl md:text-2xl text-stone-900 dark:text-stone-100 mb-1">{award.title[lang]}</h3>
-                                 <p className="text-stone-600 dark:text-stone-400 font-medium">{typeof award.event === 'string' ? award.event : award.event[lang]}</p>
-                             </div>
-                             <div className="text-xl font-serif text-nobel-gold font-bold">
-                                 {award.year}
-                             </div>
-                         </div>
-                    ))}
-                </div>
-            </div>
         </section>
 
         {/* Affiliations & Editorial */}
@@ -835,8 +788,18 @@ const App: React.FC = () => {
                                     <Mail size={22} />
                                 </div>
                                 <div>
-                                    <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">Email</div>
+                                    <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">{lang === 'tr' ? 'İş / Okul Email' : 'Work / School E-mail'}</div>
                                     <span className="text-stone-200 group-hover:text-white transition-colors">{data.contact.email}</span>
+                                </div>
+                            </a>
+
+                            <a href={`mailto:${data.contact.personalEmail}`} target="_blank" rel="noopener noreferrer" onClick={(e) => { e.preventDefault(); window.open(`mailto:${data.contact.personalEmail}`, '_blank'); }} className="flex items-center gap-4 group p-4 rounded-2xl bg-stone-800/50 hover:bg-stone-800 border border-stone-700/50 hover:border-nobel-gold transition-all duration-300">
+                                <div className="w-14 h-14 rounded-full bg-stone-900 border border-stone-700 md:border-none flex items-center justify-center text-nobel-gold group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                                    <Mail size={22} />
+                                </div>
+                                <div>
+                                    <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">{lang === 'tr' ? 'Kişisel Email' : 'Personal E-mail'}</div>
+                                    <span className="text-stone-200 group-hover:text-white transition-colors">{data.contact.personalEmail}</span>
                                 </div>
                             </a>
                             
@@ -850,11 +813,17 @@ const App: React.FC = () => {
                                 </div>
                             </a>
 
+                            <a href={data.contact.orcid} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group p-4 rounded-2xl bg-stone-800/50 hover:bg-stone-800 border border-stone-700/50 hover:border-nobel-gold transition-all duration-300">
+                                <div className="w-14 h-14 rounded-full bg-stone-900 border border-stone-700 md:border-none flex items-center justify-center text-nobel-gold group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                                    <BookOpen size={22} />
+                                </div>
+                                <div>
+                                    <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">ORCID</div>
+                                    <span className="text-stone-200 group-hover:text-white transition-colors">Orcid Link</span>
+                                </div>
+                            </a>
+
                             <div className="flex gap-4 mt-4">
-                                <a href={data.contact.orcid} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="ORCID">
-                                    <BookOpen size={20} className="group-hover:scale-110 transition-transform" />
-                                </a>
-                                
                                 {data.contact.scholar && data.contact.scholar !== '#' && (
                                     <a href={data.contact.scholar} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="Google Scholar">
                                         <GraduationCap size={20} className="group-hover:scale-110 transition-transform" />

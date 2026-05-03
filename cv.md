@@ -1,5 +1,5 @@
-# Ayşenur AKKAYA GÜL
-## Öğretim Görevlisi | Yüksek Lisans | Ph.D. Adayı
+# Dr. Öğr. Üyesi Ayşenur AKKAYA GÜL
+## Öğretim Üyesi (Asst. Prof.) | Ph.D. 
 
 ### Hakkımda
 Yıllarca yenidoğan yoğun bakım ve pediatri servislerinde edindiğim klinik tecrübemi, şimdi akademik alanda gelecek nesil sağlık çalışanlarına aktarıyorum. Hemşirelik eğitiminde yenilikçi yaklaşımlar ve kanıta dayalı uygulamalar üzerine odaklanmaktayım.
@@ -8,26 +8,28 @@ Araştırmalarım, özellikle yenidoğanlarda ağrı yönetimi, anne-bebek etkil
 
 ### Eğitim
 - **Doktora (Ph.D.) - Çocuk Sağlığı ve Hastalıkları Hemşireliği**
-  Bursa Uludağ Üniversitesi (2020 - 2025)
+  Bursa Uludağ Üniversitesi (2020 - 2024)
 - **Yüksek Lisans (M.Sc.) - Çocuk Sağlığı ve Hastalıkları Hemşireliği**
   Bursa Uludağ Üniversitesi (2017 - 2020)
 - **Lisans (B.Sc.) - Hemşirelik**
   Çorum Hitit Üniversitesi (2012 - 2016)
 
 ### Deneyim
-- **Öğretim Görevlisi - İlk ve Acil Yardım**
+- **Öğretim Görevlisi (İlk ve Acil Yardım Programı)**
   Fenerbahçe Üniversitesi (Şubat 2022 - Günümüz)
-  *Verilen Dersler: Tıbbi İlk Yardım, Travma I, Travma II, Acil Hasta Bakımı I, Acil Hasta Bakımı II, Acil Hasta Bakımı III, Klinik Uygulama I, Klinik Uygulama 2, Acil Sağlık Hizmetleri, Staj, Temel Mesleki Beceriler, Ebelik – Klinik Uygulama, Çevre ve Sosyal Sorumluluk, Sağlık Okuryazarlığı, Ambulans Eğitimi I.*
-- **Öğretim Görevlisi (Erasmus+ Hareketliliği)**
-  University of Granada (Mart 2023)
-- **Hemşire (RN) - Yenidoğan Yoğun Bakım**
-  İstanbul Tuzla Devlet Hastanesi (Ekim 2017 - Şubat 2022)
-- **Hemşire (RN) - Yenidoğan Yoğun Bakım**
-  Aydın Adnan Menderes Üniversitesi (Mart 2017 - Haziran 2017)
-- **Hemşire (RN) - Pediatri Servisi**
-  Özel Başkent Hastanesi (Ağustos 2016 - Şubat 2017)
-- **Stajyer Hemşire**
+  *Istanbul, Atasehir, TR. Verilen Dersler: Tıbbi İlk Yardım, Travma I, Travma II, Acil Hasta Bakımı I, Acil Hasta Bakımı II, Acil Hasta Bakımı III, Klinik Uygulama I, Klinik Uygulama 2, Acil Sağlık Hizmetleri, Staj, Temel Mesleki Beceriler, Ebelik – Klinik Uygulama, Çevre ve Sosyal Sorumluluk, Sağlık Okuryazarlığı, Ambulans Eğitimi I.*
+- **Hemşire (Yenidoğan Yoğun Bakım)**
+  TC Sağlık Bakanlığı Tuzla Devlet Hastanesi (Ekim 2017 - Şubat 2022)
+  *Istanbul, Tuzla, TR*
+- **Hemşire (Yenidoğan Yoğun Bakım)**
+  Aydın Adnan Menderes Üniversitesi Uygulama ve Araştırma Hastanesi (Mart 2017 - Ekim 2017)
+  *Aydın, TR*
+- **Hemşire (Pediatri Servisi)**
+  Başkent University Hospital (Ağustos 2016 - Şubat 2017)
+  *Ankara, TR*
+- **Stajyer Hemşire (Acil servis, Yenidoğan yoğun bakım)**
   Hospital Universitario de Ceuta (Eylül 2014 - Şubat 2015)
+  *Ceuta, Spain*
 
 ### Araştırmalar & Projeler
 - **Uluslararası Makale (SCI-E)**
