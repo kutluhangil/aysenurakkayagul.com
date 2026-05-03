@@ -507,7 +507,7 @@ const App: React.FC = () => {
                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-stone-100 dark:bg-stone-900 text-stone-600 dark:text-stone-400 text-xs font-bold tracking-widest uppercase rounded-full mb-6 border border-stone-200 dark:border-stone-800 shadow-sm">
                      {lang === 'tr' ? 'Etkileşim' : 'Engagement'}
                  </div>
-                 <h2 className="font-serif text-4xl text-stone-900 dark:text-white">LinkedIn Feed</h2>
+                 <h2 className="font-serif text-4xl text-stone-900 dark:text-white">{lang === 'tr' ? 'LinkedIn Gönderileri' : 'LinkedIn Feed'}</h2>
              </div>
              <div className="w-full mx-auto rounded-3xl overflow-hidden shadow-lg border border-stone-200 dark:border-stone-800 bg-white">
                 <div className="elfsight-app-31c4d3c3-6a14-4e86-81e5-a69a1ca957e3" data-elfsight-app-lazy></div>
@@ -821,20 +821,20 @@ const App: React.FC = () => {
                                 </div>
                                 <div>
                                     <div className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-1">ORCID</div>
-                                    <span className="text-stone-200 group-hover:text-white transition-colors">Orcid Link</span>
+                                    <span className="text-stone-200 group-hover:text-white transition-colors">{lang === 'tr' ? 'Profili Görüntüle' : 'View Profile'}</span>
                                 </div>
                             </a>
 
                             {(data.contact.scholar && data.contact.scholar !== '#') || (data.contact.researchgate && data.contact.researchgate !== '#') ? (
                                 <div className="flex gap-4 mt-4">
                                     {data.contact.scholar && data.contact.scholar !== '#' && (
-                                        <a href={data.contact.scholar} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="Google Scholar">
+                                        <a href={data.contact.scholar} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title={lang === 'tr' ? 'Google Akademik' : 'Google Scholar'}>
                                             <GraduationCap size={20} className="group-hover:scale-110 transition-transform" />
                                         </a>
                                     )}
 
                                     {data.contact.researchgate && data.contact.researchgate !== '#' && (
-                                        <a href={data.contact.researchgate} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title="ResearchGate">
+                                        <a href={data.contact.researchgate} target="_blank" rel="noopener noreferrer" className="w-14 h-14 rounded-full bg-stone-800/50 border border-stone-700/50 hover:border-nobel-gold hover:bg-stone-800 flex items-center justify-center text-nobel-gold transition-all duration-300 group" title={lang === 'tr' ? 'ResearchGate' : 'ResearchGate'}>
                                             <Library size={20} className="group-hover:scale-110 transition-transform" />
                                         </a>
                                     )}
@@ -861,7 +861,7 @@ const App: React.FC = () => {
                             </div>
                             
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="email" className="text-xs font-bold text-stone-400 uppercase tracking-widest">Email</label>
+                                <label htmlFor="email" className="text-xs font-bold text-stone-400 uppercase tracking-widest">{lang === 'tr' ? 'E-posta' : 'Email'}</label>
                                 <input 
                                     type="email" 
                                     id="email" 
@@ -869,7 +869,7 @@ const App: React.FC = () => {
                                     value={formState.email}
                                     onChange={(e) => setFormState({...formState, email: e.target.value})}
                                     className="px-4 py-3 bg-stone-900 border border-stone-700 rounded-xl focus:outline-none focus:border-nobel-gold text-white transition-colors"
-                                    placeholder="john@example.com"
+                                    placeholder={lang === 'tr' ? 'ornek@eposta.com' : 'john@example.com'}
                                 />
                             </div>
                             
