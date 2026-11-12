@@ -1,140 +1,60 @@
 <div align="center">
-  <h2>🎓 Premium Academic Portfolio</h2>
-  
-  <p>
-    <strong>A sophisticated, bilingual portfolio template designed specifically for academics, researchers, and educators.</strong>
-  </p>
 
-  <p>
-    <img src="https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
-    <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-    <img src="https://img.shields.io/badge/Vite-5.x-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
-    <img src="https://img.shields.io/badge/Tailwind_CSS-3.x-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/Framer_Motion-11.x-0055FF?style=flat-square&logo=framer&logoColor=white" alt="Framer Motion" />
-  </p>
+<img src="docs/media/hero.svg" alt="A bilingual academic portfolio" width="100%">
+
+<p>
+  <a href="https://aysenurakkayagul-com.vercel.app"><img alt="Live" src="https://img.shields.io/badge/live-visit%20the%20site-9b7bd4?style=for-the-badge&labelColor=0d0c12"></a>
+  <img alt="React" src="https://img.shields.io/badge/React-TypeScript-e6b85c?style=for-the-badge&labelColor=0d0c12">
+  <img alt="react-pdf" src="https://img.shields.io/badge/react--pdf-papers%20%26%20CV-5fb3a1?style=for-the-badge&labelColor=0d0c12">
+  <img alt="Languages" src="https://img.shields.io/badge/UI-TR%20%2F%20EN-9b7bd4?style=for-the-badge&labelColor=0d0c12">
+</p>
+
+<p><em>A refined, bilingual portfolio for an academic: research, publications, courses, awards and talks,<br>
+with papers and the CV readable right in the browser.</em></p>
+
 </div>
 
----
+<img src="docs/media/divider.svg" width="100%" alt="">
 
-## ✨ Key Features
+## What it is
 
-- **🌐 Bilingual Support:** Seamlessly switch between English and Turkish (or extending to any two languages) via a centralized data structure.
-- **🌓 Dark/Light Mode:** First-class aesthetic dark mode support that respects system preferences and allows manual toggling.
-- **📊 Animated Statistics:** Beautiful counter animations highlighting years of experience, publications, programs, and graduate numbers.
-- **📄 Native PDF Viewer:** Integrated `react-pdf` for previewing academic papers, journals, and curriculum vitae directly inside the browser.
-- **📝 Markdown Blog & Notes:** Share insights, presentation notes, and short articles using Markdown, beautifully rendered with `react-markdown`.
-- **🏆 Academic Showcases:** Purpose-built UI sections for Courses Taught, Awards & Honors, and Conference Talks & Media appearances.
-- **🎨 Premium Animations:** Cinematic scroll animations, staggered entries, and micro-interactions powered by Framer Motion.
-- **🖥️ Responsive Excellence:** Flawless layout execution across all device sizes—from ultrawide monitors to mobile phones.
+A portfolio designed for academics, researchers and educators. Everything lives in one central data file, so the content can be updated in both languages without touching the components.
 
----
+| | |
+|---|---|
+| **Bilingual** | Switch between English and Turkish from one data structure. |
+| **Dark and light** | Follows the system and can be toggled by hand. |
+| **Animated statistics** | Years of experience, publications, programmes and graduates as counters. |
+| **PDF viewer** | Papers, journals and the CV previewed in the page with `react-pdf`. |
+| **Notes and blog** | Short articles and talk notes written in Markdown. |
+| **Academic sections** | Courses taught, awards and honours, conference talks and media. |
+| **Motion** | Scroll reveals and micro-interactions with Framer Motion, plus a subtle 3D accent. |
 
-## 🛠️ Tech Stack
+<img src="docs/media/divider.svg" width="100%" alt="">
 
-- **Core Framework:** React 18, TypeScript
-- **Build System:** Vite
-- **Styling:** Tailwind CSS (with custom utility integrations)
-- **Icons:** Lucide React
-- **Animations:** Framer Motion
-- **Document Handling:** React-PDF (pdf.js)
-- **Content Rendering:** React Markdown
-- **Routing:** React Router DOM
+## Türkçe özet
 
----
+Akademisyenler, araştırmacılar ve eğitimciler için hazırlanmış iki dilli bir portfolyo sitesi. Araştırmalar, yayınlar, verilen dersler, ödüller ve konuşmalar tek bir veri dosyasından yönetiliyor. Makaleler ve özgeçmiş tarayıcıda PDF olarak açılıyor; Markdown ile notlar ve kısa yazılar paylaşılabiliyor. Açık ve koyu tema, Türkçe ve İngilizce arayüz var.
 
-## 🚀 Getting Started
+<img src="docs/media/divider.svg" width="100%" alt="">
 
-Follow these instructions to get your portfolio up and running locally.
+## Development
 
-### Prerequisites
-
-- Node.js (v18 or higher recommended)
-- npm or yarn
-
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/yourusername/academic-portfolio.git
-   cd academic-portfolio
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Start the development server**
-
-   ```bash
-   npm run dev
-   ```
-
-4. **Build for production**
-
-   ```bash
-   npm run build
-   ```
-
----
-
-## 📁 Project Structure
-
-```text
-├── src/
-│   ├── components/         # Reusable UI components (QuantumScene, Diagrams, etc.)
-│   ├── App.tsx             # Main application layout, routing, and UI sections
-│   ├── data.ts             # 🗄️ Single Source of Truth for all portfolio content
-│   ├── index.css           # Global typography, CSS variables, and Tailwind imports
-│   ├── index.tsx           # React bootstrap entry point
-│   ├── types.ts            # Global TypeScript interface definitions
-│   └── vite-env.d.ts       
-├── public/                 # Static assets (PDFs, standalone images, favicons)
-├── package.json            # Dependencies and npm scripts
-└── tsconfig.json           # TypeScript configuration
+```sh
+npm install
+npm run dev
+npm run build
 ```
 
----
-
-## ✏️ Customization (Data Management)
-
-This portfolio is uniquely designed to be easily updatable **without having to touch the complex UI or animation code**. All content is centralized in the `src/data.ts` file.
-
-To update your information, simply open `src/data.ts` and modify the structured objects:
-
-```typescript
-export const data = {
-  header: { ... },
-  hero: {
-    title: { tr: "Adınız Soyadınız", en: "Your Full Name" },
-    subtitle: { tr: "Uzmanlık Alanı", en: "Specialization" }
-  },
-  stats: { ... },     // Update your animated counters here
-  about: { ... },     // Update your bio and CV download link
-  teaching: { ... },  // List your taught courses
-  awards: { ... },    // Add your academic honors
-  talks: { ... },     // List your conferences and symposiums
-  projects: { ... },  // Add publications & PDF reading links
-  blog: { ... },      // Write markdown posts and notes
-  // ...
-};
+```
+data.ts        all content, in both languages
+App.tsx        pages and sections
+components/    3D scene and diagrams
+public/        CV and documents
 ```
 
-### Adding a new publication PDF
-Place your PDF file in the `public/` directory (e.g., `public/article-1.pdf`), and reference it in `data.ts` inside the `projects` array as `pdfUrl: "/article-1.pdf"`.
-
-### Adding your CV
-Place your CV PDF in the `public/` directory (e.g., `public/cv.pdf`), and reference it in `data.ts` inside the `about` object as `cvUrl: "/cv.pdf"`.
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License. You are free to modify and adapt it for your personal academic use.
-
----
 <div align="center">
-  <i>Crafted with precision for the academic and scientific community.</i>
+<br>
+<a href="https://github.com/kutluhangil"><img src="docs/media/signature.svg" width="100%" alt="Built by kutluhangil"></a>
+<sub>Built with care for a life in research and teaching.</sub>
 </div>
