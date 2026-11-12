@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/media/hero.svg" alt="A bilingual academic portfolio" width="100%">
+<img src="docs/media/hero.svg" alt="Academic portfolio — the language switch flipping EN to TR, statistics, publications and a paper turning a page in the PDF viewer" width="100%">
 
 <p>
   <a href="https://aysenurakkayagul-com.vercel.app"><img alt="Live" src="https://img.shields.io/badge/live-visit%20the%20site-9b7bd4?style=for-the-badge&labelColor=0d0c12"></a>
@@ -32,6 +32,23 @@ A portfolio designed for academics, researchers and educators. Everything lives 
 
 <img src="docs/media/divider.svg" width="100%" alt="">
 
+## One data file, every section
+
+All content lives in `data.ts`, once per language. Adding a paper or a talk is an edit to that file, never to a component.
+
+| Section | Holds |
+|---|---|
+| **About · affiliations** | Biography, institutions and an ORCID link |
+| **Research · projects · theses** | Research areas, funded projects and supervised theses |
+| **Teaching** | Courses and programmes taught |
+| **Talks** | Conference talks and invited lectures |
+| **Experience** | Academic and professional positions |
+| **Awards · certificates** | Honours and certifications, each viewable in place |
+| **Gallery · blog** | Photos and Markdown notes |
+| **Contact** | A form delivered through EmailJS |
+
+<img src="docs/media/divider.svg" width="100%" alt="">
+
 ## Türkçe özet
 
 Akademisyenler, araştırmacılar ve eğitimciler için hazırlanmış iki dilli bir portfolyo sitesi. Araştırmalar, yayınlar, verilen dersler, ödüller ve konuşmalar tek bir veri dosyasından yönetiliyor. Makaleler ve özgeçmiş tarayıcıda PDF olarak açılıyor; Markdown ile notlar ve kısa yazılar paylaşılabiliyor. Açık ve koyu tema, Türkçe ve İngilizce arayüz var.
@@ -42,7 +59,7 @@ Akademisyenler, araştırmacılar ve eğitimciler için hazırlanmış iki dilli
 
 ```sh
 npm install
-npm run dev
+npm run dev      # needs VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY for the form
 npm run build
 ```
 
@@ -56,5 +73,5 @@ public/        CV and documents
 <div align="center">
 <br>
 <a href="https://github.com/kutluhangil"><img src="docs/media/signature.svg" width="100%" alt="Built by kutluhangil"></a>
-<sub>Built with care for a life in research and teaching.</sub>
+<sub>Built with care for a life in research and teaching · the figures in the banner are placeholders.</sub>
 </div>
